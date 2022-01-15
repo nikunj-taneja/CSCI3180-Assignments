@@ -93,21 +93,30 @@ MasterRecord* construct_master_record(char *line) {
 int authenticate_user(char* acc, char* pwd) {
     size_t num_chars;
     size_t line_size = MASTER_LINE_SIZE;
+    int ret;
+    int found = 0;
     char *line = (char *) malloc(sizeof(char) * line_size);
     FILE *fp;
     
     fp = fopen(MASTER_FILE_PATH, "r");
     
     if (fp) {
-        while (getline(&line, &line_size, fp) != -1) {
+        while ((getline(&line, &line_size, fp) != -1) && !found) {
             MasterRecord* record = construct_master_record(line);
             if (strcmp(record->acc, acc) == 0 && strcmp(record->pwd, pwd) == 0) {
-                free(record);
-                fclose(fp);
-                return SUCCESS;
+                if (record->balance[0] == '-')
+                    ret = handle_err(NEG_BALANCE);
+                else
+                    ret = SUCCESS;
+                found = 1;
             }
+            free(record);
         }
-        return handle_err(INCORRECT_ACC_PWD);
+        free(line);
+        fclose(fp);
+        if (!found)
+            return handle_err(INCORRECT_ACC_PWD);
+        return ret;
     } else {
         perror("COULDN'T OPEN master.txt\n");
         exit(1);
