@@ -2,7 +2,14 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define MAX_INPUT_LEN    1
+#define MASTER_FILE_PATH "../testcase/master.txt"
+
+#define NAME_SIZE           20
+#define ACC_SIZE            16
+#define PWD_SIZE            6
+#define BALANCE_SIZE        16
+#define MAX_INPUT_SIZE      128
+#define MASTER_LINE_SIZE    60
 
 #define ATM_PROMPT         1
 #define ACCOUNT_PROMPT     2
@@ -19,6 +26,14 @@
 #define TARGET_ACC_DNE     4
 #define TRANSFER_SELF      5
 #define INSUFF_BALANCE     6
+#define FILE_NOT_FOUND    -1
+
+typedef struct {
+    char name[NAME_SIZE+1];
+    char acc[ACC_SIZE+1];
+    char pwd[PWD_SIZE+1];
+    char balance[BALANCE_SIZE+1];
+} MasterRecord;
 
 void print_welcome_msg() {
     printf("##############################################\n");
@@ -53,14 +68,49 @@ int handle_err(int err) {
     case INSUFF_BALANCE:
         printf("=> INSUFFICIENT BALANCE\n");
         break;
+    case FILE_NOT_FOUND:
+        printf("ERROR: Couldn't open the required file!\n");
+        break;
     }
     
     return err;
 }
 
-int authenticate_user(char* acc, char* pwd) {
+MasterRecord* construct_master_record(char *line) {
+    MasterRecord* record = (MasterRecord *) malloc(sizeof(MasterRecord));
+    int pos = 0;
+    strncpy(record->name, line, NAME_SIZE);
+    pos += NAME_SIZE;
+    strncpy(record->acc, line+pos, ACC_SIZE);
+    pos += ACC_SIZE;
+    strncpy(record->pwd, line+pos, PWD_SIZE);
+    pos += PWD_SIZE;
+    strncpy(record->balance, line+pos, BALANCE_SIZE);
     
-    return SUCCESS;
+    return record;
+}
+
+int authenticate_user(char* acc, char* pwd) {
+    size_t num_chars;
+    size_t line_size = MASTER_LINE_SIZE;
+    char *line = (char *) malloc(sizeof(char) * line_size);
+    FILE *fp;
+    
+    fp = fopen(MASTER_FILE_PATH, "r");
+    
+    if (fp) {
+        while (getline(&line, &line_size, fp) != -1) {
+            MasterRecord* record = construct_master_record(line);
+            if (strcmp(record->acc, acc) == 0 && strcmp(record->pwd, pwd) == 0) {
+                fclose(fp);
+                return SUCCESS;
+            }
+        }
+        return handle_err(INCORRECT_ACC_PWD);
+    } else {
+        perror("COULDN'T OPEN master.txt\n");
+        exit(1);
+    }
 }
 
 int validate_input(char* input, int prompt_id) {
@@ -77,7 +127,7 @@ int validate_input(char* input, int prompt_id) {
 }
 
 char* prompt_user(int prompt_id) {
-    char* input = (char *) malloc(sizeof(char) * MAX_INPUT_LEN);
+    char* input = (char *) malloc(sizeof(char) * MAX_INPUT_SIZE);
     switch (prompt_id) 
     {
     case ATM_PROMPT:
@@ -123,16 +173,14 @@ int main() {
     do {
         atm = prompt_user(ATM_PROMPT);
     } while (validate_input(atm, ATM_PROMPT) != SUCCESS);
-
-    printf("received %s\n", atm);
     
     do {
         acc = prompt_user(ACCOUNT_PROMPT);
         pwd = prompt_user(PASSWORD_PROMPT);
     } while (authenticate_user(acc, pwd) != SUCCESS);
     
-    printf("received %s\n", acc);
-    printf("received %s\n", pwd);
+    // printf("received %s\n", acc);
+    // printf("received %s\n", pwd);
     
     free(atm);
     free(acc);
