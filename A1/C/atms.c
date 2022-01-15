@@ -93,24 +93,6 @@ long long int to_int(char* balance_str) {
     return balance;
 }
 
-// char* format_amount(long long int amount) {
-//     // initialize a null-terminated string of
-//     // length AMOUNT_SIZE with all 0's
-//     char* amount_str = (char *) malloc(sizeof(char) * (AMOUNT_SIZE+1));
-//     memset(amount_str, '0', AMOUNT_SIZE);
-//     amount_str[AMOUNT_SIZE] = '\0';
-    
-//     // fill the string from the end
-//     long long int tmp = amount;
-//     int idx = AMOUNT_SIZE-1;
-//     while (tmp > 0) {
-//         amount_str[idx] = (char) ((tmp % 10) + '0');
-//         tmp /= 10;
-//         idx -= 1;
-//     }
-//     return amount_str;
-// }
-
 char* format_to_string(long long int num, int size) {
     // initialize a null-terminated string of all 0's
     char* str = (char *) malloc(sizeof(char) * (size+1));
@@ -127,24 +109,6 @@ char* format_to_string(long long int num, int size) {
 
     return str;
 }
-
-// double to_double(char* balance_str) {
-//     double balance = 0.0;
-//     for (int i = 1; i < BALANCE_SIZE; i++) {
-//         double digit = (double) (balance_str[i] - '0');
-//         if (i < BALANCE_SIZE-2) {
-//             balance *= 10;
-//             balance += digit;
-//         } else if (i == BALANCE_SIZE-1) {
-//             balance += digit/10;
-//         } else {
-//             balance += digit/100;
-//         }
-//     }
-//     if (balance_str[0] == '-')
-//         balance *= -1;
-//     return balance;
-// }
 
 MasterRecord* construct_master_record(char *line) {
     MasterRecord* record = (MasterRecord *) malloc(sizeof(MasterRecord));
@@ -351,7 +315,7 @@ int get_service_code(char* service) {
     return WITHDRAWAL;
 }
 
-void handle_service(int service, char* atm, char* acc, int timestamp) {
+int handle_service(int service, char* atm, char* acc, int timestamp) {
     long long int amount;
     char *trans_filepath, *amount_str, *timestamp_str;
     
@@ -360,18 +324,19 @@ void handle_service(int service, char* atm, char* acc, int timestamp) {
         trans_filepath = TRANS711_FILE_PATH;
     else
         trans_filepath = TRANS713_FILE_PATH;
+
+    timestamp_str = format_to_string(timestamp, TIMESTAMP_SIZE);
     
     if (service == DEPOSIT) {
+        // get amount and validate it
         do {
             amount = get_amount();
-            printf("received %lld", amount);
         } while (validate_amount(amount, service, acc) != SUCCESS);
         
         // record the transaction
         FILE *fp = fopen(trans_filepath, "a");
         if (fp) {
             amount_str = format_to_string(amount, AMOUNT_SIZE);
-            printf("formatted to %s", amount_str);
             timestamp_str = format_to_string(timestamp, TIMESTAMP_SIZE);
             fprintf(fp, "%s%c%s%s\n", acc, 'D', amount_str, timestamp_str);
             fclose(fp);
@@ -379,10 +344,6 @@ void handle_service(int service, char* atm, char* acc, int timestamp) {
             perror(trans_filepath);
             exit(1);
         }
-
-        free(amount_str);
-        free(timestamp_str);
-        return;
     } 
     
     else if (service == WITHDRAWAL) {
@@ -392,8 +353,15 @@ void handle_service(int service, char* atm, char* acc, int timestamp) {
         } while (validate_amount(amount, service, acc) != SUCCESS);
 
         // record the transaction
-
-
+        FILE *fp = fopen(trans_filepath, "a");
+        if (fp) {
+            amount_str = format_to_string(amount, AMOUNT_SIZE);
+            fprintf(fp, "%s%c%s%s\n", acc, 'W', amount_str, timestamp_str);
+            fclose(fp);
+        } else {
+            perror(trans_filepath);
+            exit(1);
+        }
     } 
     
     else if (service == TRANSFER) {
@@ -406,11 +374,33 @@ void handle_service(int service, char* atm, char* acc, int timestamp) {
             amount = get_amount();
         } while (validate_amount(amount, service, acc) != SUCCESS);
         
+        // record the transactions
+        FILE *fp = fopen(trans_filepath, "a");
+        if (fp) {
+            amount_str = format_to_string(amount, AMOUNT_SIZE);
+            
+            // first record withdrawal from sender
+            fprintf(fp, "%s%c%s%s\n", acc, 'W', amount_str, timestamp_str);
+            
+            // increment timestamp
+            free(timestamp_str);
+            timestamp_str = format_to_string(++timestamp, TIMESTAMP_SIZE);
+            
+            // then record deposit to receiver
+            fprintf(fp, "%s%c%s%s\n", target_acc, 'D', amount_str, timestamp_str);
+            
+            fclose(fp);
+        } else {
+            perror(trans_filepath);
+            exit(1);
+        }
         free(target_acc);
-    } else {
-        perror("service code invalid!");
-        exit(1);
     }
+    
+    free(amount_str);
+    free(timestamp_str);
+
+    return ++timestamp;
 }
 
 int main() {
@@ -440,10 +430,7 @@ int main() {
         
         // handle the requested service
         service_code = get_service_code(service);
-        handle_service(service_code, atm, acc, timestamp);
-
-        // increment timestamp
-        timestamp++;
+        timestamp = handle_service(service_code, atm, acc, timestamp);
 
         // ask if user wants to continue
         do {
