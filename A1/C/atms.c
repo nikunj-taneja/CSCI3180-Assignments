@@ -102,6 +102,7 @@ int authenticate_user(char* acc, char* pwd) {
         while (getline(&line, &line_size, fp) != -1) {
             MasterRecord* record = construct_master_record(line);
             if (strcmp(record->acc, acc) == 0 && strcmp(record->pwd, pwd) == 0) {
+                free(record);
                 fclose(fp);
                 return SUCCESS;
             }
@@ -178,9 +179,6 @@ int main() {
         acc = prompt_user(ACCOUNT_PROMPT);
         pwd = prompt_user(PASSWORD_PROMPT);
     } while (authenticate_user(acc, pwd) != SUCCESS);
-    
-    // printf("received %s\n", acc);
-    // printf("received %s\n", pwd);
     
     free(atm);
     free(acc);
