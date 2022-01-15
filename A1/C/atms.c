@@ -2,12 +2,16 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define MASTER_FILE_PATH "../testcase/master.txt"
+#define MASTER_FILE_PATH    "test/master.txt"
+#define TRANS711_FILE_PATH  "test/trans711.txt"
+#define TRANS713_FILE_PATH  "test/trans713.txt"
 
 #define NAME_SIZE          20
 #define ACC_SIZE           16
 #define PWD_SIZE           6
 #define BALANCE_SIZE       16
+#define AMOUNT_SIZE        7
+#define TIMESTAMP_SIZE     5
 #define MAX_INPUT_SIZE     128
 #define MASTER_LINE_SIZE   60
 
@@ -87,6 +91,41 @@ long long int to_int(char* balance_str) {
     if (balance_str[0] == '-')
         balance *= -1;
     return balance;
+}
+
+// char* format_amount(long long int amount) {
+//     // initialize a null-terminated string of
+//     // length AMOUNT_SIZE with all 0's
+//     char* amount_str = (char *) malloc(sizeof(char) * (AMOUNT_SIZE+1));
+//     memset(amount_str, '0', AMOUNT_SIZE);
+//     amount_str[AMOUNT_SIZE] = '\0';
+    
+//     // fill the string from the end
+//     long long int tmp = amount;
+//     int idx = AMOUNT_SIZE-1;
+//     while (tmp > 0) {
+//         amount_str[idx] = (char) ((tmp % 10) + '0');
+//         tmp /= 10;
+//         idx -= 1;
+//     }
+//     return amount_str;
+// }
+
+char* format_to_string(long long int num, int size) {
+    // initialize a null-terminated string of all 0's
+    char* str = (char *) malloc(sizeof(char) * (size+1));
+    memset(str, '0', size);
+    str[size] = '\0';
+    
+    // fill the string from the end
+    int idx = size-1;
+    while (num > 0) {
+        str[idx] = (char) ((num % 10) + '0');
+        num /= 10;
+        idx -= 1;
+    }
+
+    return str;
 }
 
 // double to_double(char* balance_str) {
@@ -232,7 +271,6 @@ int validate_input(char* input, int prompt_id) {
             return FAILURE;
         if (!((strcmp(input, "Y") == 0) || (strcmp(input, "y") == 0)))
             return handle_err(INVALID_INPUT);
-        break;
     }
     
     return SUCCESS;
@@ -245,7 +283,7 @@ long long int get_amount() {
     return (long long int) (amount*100);
 }
 
-int validate_amount(double amount, int service_code, char* acc) {
+int validate_amount(long long int amount, int service_code, char* acc) {
     switch (service_code)
     {
     case DEPOSIT:
@@ -313,24 +351,53 @@ int get_service_code(char* service) {
     return WITHDRAWAL;
 }
 
-int handle_service(int service, char* atm, char* acc, int timestamp) {
-    double amount;
-    char* target_acc;
+void handle_service(int service, char* atm, char* acc, int timestamp) {
+    long long int amount;
+    char *trans_filepath, *amount_str, *timestamp_str;
     
-    switch (service) {
-    case DEPOSIT:
+    // select the ATM's transactions file 
+    if (strcmp(atm, "1") == 0)
+        trans_filepath = TRANS711_FILE_PATH;
+    else
+        trans_filepath = TRANS713_FILE_PATH;
+    
+    if (service == DEPOSIT) {
+        do {
+            amount = get_amount();
+            printf("received %lld", amount);
+        } while (validate_amount(amount, service, acc) != SUCCESS);
+        
+        // record the transaction
+        FILE *fp = fopen(trans_filepath, "a");
+        if (fp) {
+            amount_str = format_to_string(amount, AMOUNT_SIZE);
+            printf("formatted to %s", amount_str);
+            timestamp_str = format_to_string(timestamp, TIMESTAMP_SIZE);
+            fprintf(fp, "%s%c%s%s\n", acc, 'D', amount_str, timestamp_str);
+            fclose(fp);
+        } else {
+            perror(trans_filepath);
+            exit(1);
+        }
+
+        free(amount_str);
+        free(timestamp_str);
+        return;
+    } 
+    
+    else if (service == WITHDRAWAL) {
+        // get amount and validate it
         do {
             amount = get_amount();
         } while (validate_amount(amount, service, acc) != SUCCESS);
-        break;
-    
-    case WITHDRAWAL:
-        do {
-            amount = get_amount();
-       } while (validate_amount(amount, service, acc) != SUCCESS);
-       break;
 
-    case TRANSFER:
+        // record the transaction
+
+
+    } 
+    
+    else if (service == TRANSFER) {
+        char *target_acc;
         do {
             target_acc = prompt_user(TARGET_ACC_PROMPT);
         } while (validate_target_acc(target_acc, acc) != SUCCESS);
@@ -338,10 +405,12 @@ int handle_service(int service, char* atm, char* acc, int timestamp) {
         do {
             amount = get_amount();
         } while (validate_amount(amount, service, acc) != SUCCESS);
-        break;
+        
+        free(target_acc);
+    } else {
+        perror("service code invalid!");
+        exit(1);
     }
-
-    return timestamp+1;
 }
 
 int main() {
@@ -369,19 +438,25 @@ int main() {
             service = prompt_user(SERVICE_PROMPT);
         } while (validate_input(service, SERVICE_PROMPT) != SUCCESS);
         
+        // handle the requested service
         service_code = get_service_code(service);
-        timestamp = handle_service(service_code, atm, acc, timestamp);
+        handle_service(service_code, atm, acc, timestamp);
 
+        // increment timestamp
+        timestamp++;
+
+        // ask if user wants to continue
         do {
             cont = prompt_user(CONTINUE_PROMPT);
         } while (validate_input(cont, CONTINUE_PROMPT) == INVALID_INPUT);
-    } while (validate_input(cont, CONTINUE_PROMPT) == SUCCESS);
         
+        // free all the allocated memory
+        free(atm);
+        free(acc);
+        free(pwd);
+        free(service);
+    } while (validate_input(cont, CONTINUE_PROMPT) == SUCCESS);
     
-    free(atm);
-    free(acc);
-    free(pwd);
     free(cont);
-    free(service);
     return 0;
 }
