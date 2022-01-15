@@ -68,9 +68,6 @@ int handle_err(int err) {
     case INSUFF_BALANCE:
         printf("=> INSUFFICIENT BALANCE\n");
         break;
-    case FILE_NOT_FOUND:
-        printf("ERROR: Couldn't open the required file!\n");
-        break;
     }
     
     return err;
@@ -86,7 +83,6 @@ MasterRecord* construct_master_record(char *line) {
     strncpy(record->pwd, line+pos, PWD_SIZE);
     pos += PWD_SIZE;
     strncpy(record->balance, line+pos, BALANCE_SIZE);
-    
     return record;
 }
 
@@ -118,7 +114,7 @@ int authenticate_user(char* acc, char* pwd) {
             return handle_err(INCORRECT_ACC_PWD);
         return ret;
     } else {
-        perror("COULDN'T OPEN master.txt\n");
+        perror("master.txt");
         exit(1);
     }
 }
@@ -177,17 +173,27 @@ char* prompt_user(int prompt_id) {
 }
 
 int main() {
-    print_welcome_msg();
-    char *atm, *acc, *pwd;
-
+    int auth_err = 0;
+    char *atm, *acc, *pwd, cont = 'Y';
     do {
-        atm = prompt_user(ATM_PROMPT);
-    } while (validate_input(atm, ATM_PROMPT) != SUCCESS);
-    
-    do {
-        acc = prompt_user(ACCOUNT_PROMPT);
-        pwd = prompt_user(PASSWORD_PROMPT);
-    } while (authenticate_user(acc, pwd) != SUCCESS);
+        print_welcome_msg();
+        
+        do {
+            atm = prompt_user(ATM_PROMPT);
+        } while (validate_input(atm, ATM_PROMPT) != SUCCESS);
+        
+        do {
+            acc = prompt_user(ACCOUNT_PROMPT);
+            pwd = prompt_user(PASSWORD_PROMPT);
+            auth_err = authenticate_user(acc, pwd);
+        } while (auth_err == INCORRECT_ACC_PWD);
+        
+        if (auth_err == NEG_BALANCE)
+            continue;
+        
+        // TODO: service prompt
+    } while (cont == 'Y');
+        
     
     free(atm);
     free(acc);
