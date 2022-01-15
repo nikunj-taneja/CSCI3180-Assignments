@@ -1,0 +1,141 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+#define MAX_INPUT_LEN    1
+
+#define ATM_PROMPT         1
+#define ACCOUNT_PROMPT     2
+#define PASSWORD_PROMPT    3
+#define SERVICE_PROMPT     4
+#define AMOUNT_PROMPT      5
+#define TARGET_PROMPT      6
+#define CONTINUE_PROMPT    0
+
+#define SUCCESS            0
+#define INVALID_INPUT      1
+#define INCORRECT_ACC_PWD  2
+#define NEG_BALANCE        3
+#define TARGET_ACC_DNE     4
+#define TRANSFER_SELF      5
+#define INSUFF_BALANCE     6
+
+void print_welcome_msg() {
+    printf("##############################################\n");
+    printf("##         Gringotts Wizarding Bank         ##\n");
+    printf("##                 Welcome                  ##\n");
+    printf("##############################################\n");
+}
+
+int handle_err(int err) {
+    switch (err)
+    {
+    case INVALID_INPUT:
+        printf("=> INVALID INPUT\n");
+        break;
+    
+    case INCORRECT_ACC_PWD:
+        printf("=> INCORRECT ACCOUNT/PASSWORD\n");
+        break;
+    
+    case NEG_BALANCE:
+        printf("=> NEGATIVE REMAINS TRANSACTION ABORT\n");
+        break;
+    
+    case TARGET_ACC_DNE:
+        printf("=> TARGET ACCOUNT DOES NOT EXIST\n");
+        break;
+
+    case TRANSFER_SELF:
+        printf("=> YOU CANNOT TRANSFER TO YOURSELF\n");
+        break;
+
+    case INSUFF_BALANCE:
+        printf("=> INSUFFICIENT BALANCE\n");
+        break;
+    }
+    
+    return err;
+}
+
+int authenticate_user(char* acc, char* pwd) {
+    
+    return SUCCESS;
+}
+
+int validate_input(char* input, int prompt_id) {
+    switch (prompt_id)
+    {
+    case ATM_PROMPT:
+        if (!(strcmp(input, "1") == 0 || strcmp(input, "2") == 0)) {
+            return handle_err(INVALID_INPUT);
+        }
+        break;
+    }
+    
+    return SUCCESS;
+}
+
+char* prompt_user(int prompt_id) {
+    char* input = (char *) malloc(sizeof(char) * MAX_INPUT_LEN);
+    switch (prompt_id) 
+    {
+    case ATM_PROMPT:
+        printf("=> PLEASE CHOOSE THE ATM\n");
+        printf("=> PRESS 1 FOR ATM 711\n");
+        printf("=> PRESS 2 FOR ATM 713\n");
+        break;
+    
+    case ACCOUNT_PROMPT:
+        printf("=> ACCOUNT\n");
+        break;
+    
+    case PASSWORD_PROMPT:
+        printf("=> PASSWORD\n");
+        break;
+    
+    case SERVICE_PROMPT:
+        printf("=> PLEASE CHOOSE YOUR SERVICE\n");
+        printf("=> PRESS D FOR DEPOSIT\n");
+        printf("=> PRESS W FOR WITHDRAWAL\n");
+        printf("=> PRESS T FOR TRANSFER\n");
+        break;
+    
+    case AMOUNT_PROMPT:
+        printf("=> AMOUNT\n");
+        break;
+    
+    case CONTINUE_PROMPT:
+        printf("=> CONTINUE?\n");
+        printf("=> N FOR NO\n");
+        printf("=> Y FOR YES\n");
+        break;
+    }
+    scanf("%s", input);
+    
+    return input;
+}
+
+int main() {
+    print_welcome_msg();
+    char *atm, *acc, *pwd;
+
+    do {
+        atm = prompt_user(ATM_PROMPT);
+    } while (validate_input(atm, ATM_PROMPT) != SUCCESS);
+
+    printf("received %s\n", atm);
+    
+    do {
+        acc = prompt_user(ACCOUNT_PROMPT);
+        pwd = prompt_user(PASSWORD_PROMPT);
+    } while (authenticate_user(acc, pwd) != SUCCESS);
+    
+    printf("received %s\n", acc);
+    printf("received %s\n", pwd);
+    
+    free(atm);
+    free(acc);
+    free(pwd);
+    return 0;
+}
