@@ -44,37 +44,37 @@ typedef struct {
 } MasterRecord;
 
 void print_welcome_msg() {
-    printf("##############################################\n");
-    printf("##         Gringotts Wizarding Bank         ##\n");
-    printf("##                 Welcome                  ##\n");
-    printf("##############################################\n");
+    printf("##############################################\r\n");
+    printf("##         Gringotts Wizarding Bank         ##\r\n");
+    printf("##                 Welcome                  ##\r\n");
+    printf("##############################################\r\n");
 }
 
 int handle_err(int err) {
     switch (err)
     {
     case INVALID_INPUT:
-        printf("=> INVALID INPUT\n");
+        printf("=> INVALID INPUT\r\n");
         break;
     
     case INCORRECT_ACC_PWD:
-        printf("=> INCORRECT ACCOUNT/PASSWORD\n");
+        printf("=> INCORRECT ACCOUNT/PASSWORD\r\n");
         break;
     
     case NEG_BALANCE:
-        printf("=> NEGATIVE REMAINS TRANSACTION ABORT\n");
+        printf("=> NEGATIVE REMAINS TRANSACTION ABORT\r\n");
         break;
     
     case TARGET_ACC_DNE:
-        printf("=> TARGET ACCOUNT DOES NOT EXIST\n");
+        printf("=> TARGET ACCOUNT DOES NOT EXIST\r\n");
         break;
 
     case TRANSFER_SELF:
-        printf("=> YOU CANNOT TRANSFER TO YOURSELF\n");
+        printf("=> YOU CANNOT TRANSFER TO YOURSELF\r\n");
         break;
 
     case INSUFF_BALANCE:
-        printf("=> INSUFFICIENT BALANCE\n");
+        printf("=> INSUFFICIENT BALANCE\r\n");
         break;
     }
     
@@ -246,7 +246,7 @@ int validate_input(char* input, int prompt_id) {
 
 long long int get_amount() {
     double amount;
-    printf("=> AMOUNT\n");
+    printf("=> AMOUNT\r\n");
     scanf("%lf", &amount);
     return (long long int) (amount*100);
 }
@@ -276,34 +276,34 @@ char* prompt_user(int prompt_id) {
     
     switch (prompt_id) {
     case ATM_PROMPT:
-        printf("=> PLEASE CHOOSE THE ATM\n");
-        printf("=> PRESS 1 FOR ATM 711\n");
-        printf("=> PRESS 2 FOR ATM 713\n");
+        printf("=> PLEASE CHOOSE THE ATM\r\n");
+        printf("=> PRESS 1 FOR ATM 711\r\n");
+        printf("=> PRESS 2 FOR ATM 713\r\n");
         break;
     
     case ACCOUNT_PROMPT:
-        printf("=> ACCOUNT\n");
+        printf("=> ACCOUNT\r\n");
         break;
     
     case PASSWORD_PROMPT:
-        printf("=> PASSWORD\n");
+        printf("=> PASSWORD\r\n");
         break;
     
     case SERVICE_PROMPT:
-        printf("=> PLEASE CHOOSE YOUR SERVICE\n");
-        printf("=> PRESS D FOR DEPOSIT\n");
-        printf("=> PRESS W FOR WITHDRAWAL\n");
-        printf("=> PRESS T FOR TRANSFER\n");
+        printf("=> PLEASE CHOOSE YOUR SERVICE\r\n");
+        printf("=> PRESS D FOR DEPOSIT\r\n");
+        printf("=> PRESS W FOR WITHDRAWAL\r\n");
+        printf("=> PRESS T FOR TRANSFER\r\n");
         break;
 
     case TARGET_ACC_PROMPT:
-        printf("=> TARGET ACCOUNT\n");
+        printf("=> TARGET ACCOUNT\r\n");
         break;
     
     case CONTINUE_PROMPT:
-        printf("=> CONTINUE?\n");
-        printf("=> N FOR NO\n");
-        printf("=> Y FOR YES\n");
+        printf("=> CONTINUE?\r\n");
+        printf("=> N FOR NO\r\n");
+        printf("=> Y FOR YES\r\n");
         break;
     }
     
