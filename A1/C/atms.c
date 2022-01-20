@@ -114,12 +114,16 @@ MasterRecord* construct_master_record(char *line) {
     MasterRecord* record = (MasterRecord *) malloc(sizeof(MasterRecord));
     int pos = 0;
     strncpy(record->name, line, NAME_SIZE);
+    record->name[NAME_SIZE] = '\0';
     pos += NAME_SIZE;
     strncpy(record->acc, line+pos, ACC_SIZE);
+    record->acc[ACC_SIZE] = '\0';
     pos += ACC_SIZE;
     strncpy(record->pwd, line+pos, PWD_SIZE);
+    record->pwd[PWD_SIZE] = '\0';
     pos += PWD_SIZE;
     strncpy(record->balance, line+pos, BALANCE_SIZE);
+    record->balance[BALANCE_SIZE] = '\0';
     return record;
 }
 
@@ -338,7 +342,7 @@ int handle_service(int service, char* atm, char* acc, int timestamp) {
         if (fp) {
             amount_str = format_to_string(amount, AMOUNT_SIZE);
             timestamp_str = format_to_string(timestamp, TIMESTAMP_SIZE);
-            fprintf(fp, "%s%c%s%s\n", acc, 'D', amount_str, timestamp_str);
+            fprintf(fp, "%s%c%s%s\r\n", acc, 'D', amount_str, timestamp_str);
             fclose(fp);
         } else {
             perror(trans_filepath);
@@ -356,7 +360,7 @@ int handle_service(int service, char* atm, char* acc, int timestamp) {
         FILE *fp = fopen(trans_filepath, "a");
         if (fp) {
             amount_str = format_to_string(amount, AMOUNT_SIZE);
-            fprintf(fp, "%s%c%s%s\n", acc, 'W', amount_str, timestamp_str);
+            fprintf(fp, "%s%c%s%s\r\n", acc, 'W', amount_str, timestamp_str);
             fclose(fp);
         } else {
             perror(trans_filepath);
@@ -380,14 +384,14 @@ int handle_service(int service, char* atm, char* acc, int timestamp) {
             amount_str = format_to_string(amount, AMOUNT_SIZE);
             
             // first record withdrawal from sender
-            fprintf(fp, "%s%c%s%s\n", acc, 'W', amount_str, timestamp_str);
+            fprintf(fp, "%s%c%s%s\r\n", acc, 'W', amount_str, timestamp_str);
             
             // increment timestamp
             free(timestamp_str);
             timestamp_str = format_to_string(++timestamp, TIMESTAMP_SIZE);
             
             // then record deposit to receiver
-            fprintf(fp, "%s%c%s%s\n", target_acc, 'D', amount_str, timestamp_str);
+            fprintf(fp, "%s%c%s%s\r\n", target_acc, 'D', amount_str, timestamp_str);
             
             fclose(fp);
         } else {
