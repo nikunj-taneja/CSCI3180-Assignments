@@ -181,7 +181,7 @@ void save_transactions(struct transaction ** transactions, char save_path[]){
     char floating_str[10];
     int timestamp;
     while(transactions[transaction_index] != NULL){
-
+        positive = 1;
         fprintf(fp, "%.16s%.1s", transactions[transaction_index]->transac_account, transactions[transaction_index]->op_transac);
         if(transactions[transaction_index]->amounts < 0){
             positive = 0;
@@ -204,7 +204,7 @@ void save_transactions(struct transaction ** transactions, char save_path[]){
         }
         fprintf(fp, "%s", integer_str);
 
-        floating = (int) (amounts - integer)*100;
+        floating = (int) ((amounts - integer)*100);
         itoa(floating, floating_str, 10);
         fprintf(fp, "%s", floating_str);
         for (int i=0; i<2-strlen(floating_str);i++){
@@ -221,12 +221,13 @@ void save_transactions(struct transaction ** transactions, char save_path[]){
     fclose(fp);
 }
 
-void sort_transaction(char path[], char sort_path[]) {
+void sort_transaction(char path[], char sort_path[]){
     struct transaction ** transactions = get_transactions(path);
     struct transaction ** transactions_sort = sort_transactions(transactions);
     save_transactions(transactions_sort, sort_path);
 }
 ///////////////////////////////////////////////
+
 
 typedef struct {
     char acc[ACC_SIZE+1];
@@ -407,15 +408,11 @@ void report_negative_balance_accs(char* updated_master, char* neg_report) {
     char *master_line = (char *) malloc(sizeof(char) * (MASTER_LINE_SIZE+1));
 
     // read updated master line by line and report negative balances
-    fseek(fp_updated_master, 0, SEEK_SET);
-    printf("reading updated master...\n");
     while (getline(&master_line, &master_line_size, fp_updated_master) != -1) {
         MasterRecord* rec = construct_master_record(master_line);
-        printf("%lld\n", rec->balance);
         if (rec->balance < 0) {
             char *balance_str = format_balance(rec->balance, BALANCE_SIZE);
             fprintf(fp_neg_report, "Name: %s Account Number: %s Balance: %s\r\n", rec->name, rec->acc, balance_str);
-            fprintf(stdout, "Name: %s Account Number: %s Balance: %s\r\n", rec->name, rec->acc, balance_str);
             free(balance_str);
         }
         free(rec);
