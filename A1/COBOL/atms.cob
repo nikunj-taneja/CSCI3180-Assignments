@@ -43,10 +43,13 @@
        01 SERVICE-INPUT PIC X(10).
        01 AMT-INPUT PIC S9(5)V9(2) VALUE 00000.00.
        01 CONTINUE-INPUT PIC X(10).
+       01 TXN-TIMESTAMP PIC 9(5) VALUE 00000.
 
        PROCEDURE DIVISION.
        
        MAIN-PARAGRAPH.
+           OPEN OUTPUT TRANS711-FILE.
+           OPEN OUTPUT TRANS713-FILE.
            DISPLAY "##############################################".
            DISPLAY "##         Gringotts Wizarding Bank         ##".
            DISPLAY "##                 Welcome                  ##".
@@ -83,6 +86,10 @@
 
            IF ACC = ACC-INPUT AND PWD = PWD-INPUT THEN 
            CLOSE MASTER-FILE
+           IF SIG = '-' THEN
+           DISPLAY "=> NEGATIVE REMAINS TRANSACTION ABORT"
+           GO TO ATM-PROMPT
+           END-IF
            GO TO SERVICE-PROMPT
            END-IF.
 
@@ -111,23 +118,63 @@
        DEPOSIT-HANDLER.
            DISPLAY "=> AMOUNT"
            ACCEPT AMT-INPUT FROM SYSIN
+           COMPUTE AMT-INPUT = AMT-INPUT * 100.00.
            IF AMT-INPUT < 0 THEN
            DISPLAY "INCORRECT AMOUNT"
            GO TO DEPOSIT-HANDLER
            END-IF.
-      *    TODO: IMPLEMENT DEPOSIT-HANDLER
+           
+           IF ATM-INPUT = 1 THEN
+           SET ACC-711 TO ACC-INPUT
+           MOVE "D" TO OP-711
+           SET AMT-711 TO AMT-INPUT
+           SET TS-711 TO TXN-TIMESTAMP
+           WRITE TRANS711-RECORD
+           COMPUTE TXN-TIMESTAMP = TXN-TIMESTAMP + 1
+           END-IF.
+
+           IF ATM-INPUT = 2 THEN
+           SET ACC-713 TO ACC-INPUT
+           MOVE "D" TO OP-713
+           SET AMT-713 TO AMT-INPUT
+           SET TS-713 TO TXN-TIMESTAMP
+           WRITE TRANS713-RECORD
+           COMPUTE TXN-TIMESTAMP = TXN-TIMESTAMP + 1
+           END-IF.
 
            GO TO CONTINUE-PROMPT.
 
        WITHDRAWAL-HANDLER.
            DISPLAY "=> AMOUNT"
            ACCEPT AMT-INPUT FROM SYSIN
+           COMPUTE AMT-INPUT = AMT-INPUT * 100.00.
            IF AMT-INPUT < 0 THEN
            DISPLAY "INCORRECT AMOUNT"
            GO TO DEPOSIT-HANDLER
            END-IF.
 
-      * TODO: IMPLEMENT WITHDRAWAL-HANDLER
+           IF BAL < AMT-INPUT THEN
+           DISPLAY "=> INSUFFICIENT BALANCE"
+           GO TO WITHDRAWAL-HANDLER
+           END-IF.
+
+           IF ATM-INPUT = 1 THEN
+           SET ACC-711 TO ACC-INPUT
+           MOVE "W" TO OP-711
+           SET AMT-711 TO AMT-INPUT
+           SET TS-711 TO TXN-TIMESTAMP
+           WRITE TRANS711-RECORD
+           COMPUTE TXN-TIMESTAMP = TXN-TIMESTAMP + 1
+           END-IF.
+
+           IF ATM-INPUT = 2 THEN
+           SET ACC-713 TO ACC-INPUT
+           MOVE "W" TO OP-713
+           SET AMT-713 TO AMT-INPUT
+           SET TS-713 TO TXN-TIMESTAMP
+           WRITE TRANS713-RECORD
+           COMPUTE TXN-TIMESTAMP = TXN-TIMESTAMP + 1
+           END-IF.
 
            GO TO CONTINUE-PROMPT.
 
@@ -149,6 +196,8 @@
            DISPLAY "=> Y FOR YES".
            ACCEPT CONTINUE-INPUT FROM SYSIN.
            IF CONTINUE-INPUT = "N" THEN
+           CLOSE TRANS711-FILE
+           CLOSE TRANS713-FILE
            STOP RUN
            END-IF.
            
