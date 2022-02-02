@@ -104,7 +104,8 @@
 
            IF SERVICE-INPUT = "T" THEN GO TO TRANSFER-HANDLER
            END-IF.
-
+           
+           DISPLAY "=> INVALID INPUT".
            GO TO SERVICE-PROMPT.
 
        DEPOSIT-HANDLER.
@@ -143,13 +144,20 @@
            GO TO CONTINUE-PROMPT.
 
        CONTINUE-PROMPT.
-           DISPLAY "=> CONTINUE?"
-           ACCEPT CONTINUE-INPUT FROM SYSIN
-           IF CONTINUE-INPUT NOT = "Y" AND CONTINUE-INPUT NOT = "N" THEN
-           GO TO CONTINUE-PROMPT
+           DISPLAY "=> CONTINUE?".
+           DISPLAY "=> N FOR NO".
+           DISPLAY "=> Y FOR YES".
+           ACCEPT CONTINUE-INPUT FROM SYSIN.
+           IF CONTINUE-INPUT = "N" THEN
+           STOP RUN
+           END-IF.
+           
+           IF CONTINUE-INPUT = "Y" THEN
+           GO TO ATM-PROMPT
            END-IF. 
 
-           STOP RUN.
+           DISPLAY "=> INVALID INPUT".                 
+           GO TO CONTINUE-PROMPT.
 
 
 
