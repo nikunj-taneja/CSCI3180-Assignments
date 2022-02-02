@@ -412,7 +412,7 @@ void report_negative_balance_accs(char* updated_master, char* neg_report) {
         MasterRecord* rec = construct_master_record(master_line);
         if (rec->balance < 0) {
             char *balance_str = format_balance(rec->balance, BALANCE_SIZE);
-            fprintf(fp_neg_report, "Name: %s Account Number: %s Balance: %s\r\n", rec->name, rec->acc, balance_str);
+            fprintf(fp_neg_report, "Name: %s Account Number: %s Balance: %s\n", rec->name, rec->acc, balance_str);
             free(balance_str);
         }
         free(rec);
@@ -444,7 +444,7 @@ void report_negative_balance_accs(char* updated_master, char* neg_report) {
 //             fseek(fp_updated_master, -num_chars, SEEK_CUR);
 //             long long int updated_balance = master_rec->balance + delta;
 //             char *balance_str = format_balance(updated_balance, BALANCE_SIZE);
-//             fprintf(fp_updated_master, "%s%s%s%s\r\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
+//             fprintf(fp_updated_master, "%s%s%s%s\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
 //             found = 1;
 //             free(balance_str);
 //         }
@@ -527,7 +527,7 @@ void update_master(char* txn, char* master, char* updated_master) {
                         // update record and write to updated master file
                         long long int updated_balance = master_rec->balance + delta;
                         char *balance_str = format_balance(updated_balance, BALANCE_SIZE);
-                        fprintf(fp_updated_master, "%s%s%s%s\r\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
+                        fprintf(fp_updated_master, "%s%s%s%s\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
                         free(balance_str);
 
                         // reset delta
@@ -558,7 +558,7 @@ void update_master(char* txn, char* master, char* updated_master) {
                     // update record and write to updated master file
                     long long int updated_balance = master_rec->balance + delta;
                     char *balance_str = format_balance(updated_balance, BALANCE_SIZE);
-                    fprintf(fp_updated_master, "%s%s%s%s\r\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
+                    fprintf(fp_updated_master, "%s%s%s%s\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
                     free(balance_str);
 
                     // reset delta

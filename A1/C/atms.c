@@ -44,37 +44,37 @@ typedef struct {
 } MasterRecord;
 
 void print_welcome_msg() {
-    printf("##############################################\r\n");
-    printf("##         Gringotts Wizarding Bank         ##\r\n");
-    printf("##                 Welcome                  ##\r\n");
-    printf("##############################################\r\n");
+    printf("##############################################\n");
+    printf("##         Gringotts Wizarding Bank         ##\n");
+    printf("##                 Welcome                  ##\n");
+    printf("##############################################\n");
 }
 
 int handle_err(int err) {
     switch (err)
     {
     case INVALID_INPUT:
-        printf("=> INVALID INPUT\r\n");
+        printf("=> INVALID INPUT\n");
         break;
     
     case INCORRECT_ACC_PWD:
-        printf("=> INCORRECT ACCOUNT/PASSWORD\r\n");
+        printf("=> INCORRECT ACCOUNT/PASSWORD\n");
         break;
     
     case NEG_BALANCE:
-        printf("=> NEGATIVE REMAINS TRANSACTION ABORT\r\n");
+        printf("=> NEGATIVE REMAINS TRANSACTION ABORT\n");
         break;
     
     case TARGET_ACC_DNE:
-        printf("=> TARGET ACCOUNT DOES NOT EXIST\r\n");
+        printf("=> TARGET ACCOUNT DOES NOT EXIST\n");
         break;
 
     case TRANSFER_SELF:
-        printf("=> YOU CANNOT TRANSFER TO YOURSELF\r\n");
+        printf("=> YOU CANNOT TRANSFER TO YOURSELF\n");
         break;
 
     case INSUFF_BALANCE:
-        printf("=> INSUFFICIENT BALANCE\r\n");
+        printf("=> INSUFFICIENT BALANCE\n");
         break;
     }
     
@@ -246,7 +246,7 @@ int validate_input(char* input, int prompt_id) {
 
 long long int get_amount() {
     double amount;
-    printf("=> AMOUNT\r\n");
+    printf("=> AMOUNT\n");
     scanf("%lf", &amount);
     return (long long int) (amount*100);
 }
@@ -276,34 +276,34 @@ char* prompt_user(int prompt_id) {
     
     switch (prompt_id) {
     case ATM_PROMPT:
-        printf("=> PLEASE CHOOSE THE ATM\r\n");
-        printf("=> PRESS 1 FOR ATM 711\r\n");
-        printf("=> PRESS 2 FOR ATM 713\r\n");
+        printf("=> PLEASE CHOOSE THE ATM\n");
+        printf("=> PRESS 1 FOR ATM 711\n");
+        printf("=> PRESS 2 FOR ATM 713\n");
         break;
     
     case ACCOUNT_PROMPT:
-        printf("=> ACCOUNT\r\n");
+        printf("=> ACCOUNT\n");
         break;
     
     case PASSWORD_PROMPT:
-        printf("=> PASSWORD\r\n");
+        printf("=> PASSWORD\n");
         break;
     
     case SERVICE_PROMPT:
-        printf("=> PLEASE CHOOSE YOUR SERVICE\r\n");
-        printf("=> PRESS D FOR DEPOSIT\r\n");
-        printf("=> PRESS W FOR WITHDRAWAL\r\n");
-        printf("=> PRESS T FOR TRANSFER\r\n");
+        printf("=> PLEASE CHOOSE YOUR SERVICE\n");
+        printf("=> PRESS D FOR DEPOSIT\n");
+        printf("=> PRESS W FOR WITHDRAWAL\n");
+        printf("=> PRESS T FOR TRANSFER\n");
         break;
 
     case TARGET_ACC_PROMPT:
-        printf("=> TARGET ACCOUNT\r\n");
+        printf("=> TARGET ACCOUNT\n");
         break;
     
     case CONTINUE_PROMPT:
-        printf("=> CONTINUE?\r\n");
-        printf("=> N FOR NO\r\n");
-        printf("=> Y FOR YES\r\n");
+        printf("=> CONTINUE?\n");
+        printf("=> N FOR NO\n");
+        printf("=> Y FOR YES\n");
         break;
     }
     
@@ -342,7 +342,7 @@ int handle_service(int service, char* atm, char* acc, int timestamp) {
         if (fp) {
             amount_str = format_to_string(amount, AMOUNT_SIZE);
             timestamp_str = format_to_string(timestamp, TIMESTAMP_SIZE);
-            fprintf(fp, "%s%c%s%s\r\n", acc, 'D', amount_str, timestamp_str);
+            fprintf(fp, "%s%c%s%s\n", acc, 'D', amount_str, timestamp_str);
             fclose(fp);
         } else {
             perror(trans_filepath);
@@ -360,7 +360,7 @@ int handle_service(int service, char* atm, char* acc, int timestamp) {
         FILE *fp = fopen(trans_filepath, "a");
         if (fp) {
             amount_str = format_to_string(amount, AMOUNT_SIZE);
-            fprintf(fp, "%s%c%s%s\r\n", acc, 'W', amount_str, timestamp_str);
+            fprintf(fp, "%s%c%s%s\n", acc, 'W', amount_str, timestamp_str);
             fclose(fp);
         } else {
             perror(trans_filepath);
@@ -384,14 +384,14 @@ int handle_service(int service, char* atm, char* acc, int timestamp) {
             amount_str = format_to_string(amount, AMOUNT_SIZE);
             
             // first record withdrawal from sender
-            fprintf(fp, "%s%c%s%s\r\n", acc, 'W', amount_str, timestamp_str);
+            fprintf(fp, "%s%c%s%s\n", acc, 'W', amount_str, timestamp_str);
             
             // increment timestamp
             free(timestamp_str);
             timestamp_str = format_to_string(++timestamp, TIMESTAMP_SIZE);
             
             // then record deposit to receiver
-            fprintf(fp, "%s%c%s%s\r\n", target_acc, 'D', amount_str, timestamp_str);
+            fprintf(fp, "%s%c%s%s\n", target_acc, 'D', amount_str, timestamp_str);
             
             fclose(fp);
         } else {
