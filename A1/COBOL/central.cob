@@ -88,7 +88,7 @@
        01 NEG-REPORT-RECORD.
            05 NAME-LABEL PIC X(6) VALUE "Name: ".
            05 NAME-NEG   PIC X(20).
-           05 ACC-LABEL  PIC A(17) VALUE " Account Number: ".
+           05 ACC-LABEL  PIC X(17) VALUE " Account Number: ".
            05 ACC-NEG    PIC 9(16).
            05 BAL-LABEL  PIC X(10) VALUE " Balance: ".
            05 SIG-NEG    PIC X(1) VALUE "-".
