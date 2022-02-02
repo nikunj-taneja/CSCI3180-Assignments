@@ -156,7 +156,7 @@
            GO TO DEPOSIT-HANDLER
            END-IF.
 
-           IF BAL < AMT-INPUT THEN
+           IF BAL < AMT-INTEGER THEN
            DISPLAY "=> INSUFFICIENT BALANCE"
            GO TO WITHDRAWAL-HANDLER
            END-IF.
@@ -220,7 +220,7 @@
                                                                         
            IF ACC = ACC-INPUT THEN
            CLOSE MASTER-FILE
-           IF BAL < AMT-INPUT THEN
+           IF BAL < AMT-INTEGER THEN
            DISPLAY "=> INSUFFICIENT BALANCE"
            GO TO TRANSFER-AMOUNT-PROMPT
            END-IF
