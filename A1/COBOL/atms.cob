@@ -60,8 +60,9 @@
        
            ACCEPT ATM-INPUT FROM SYSIN
 
-           IF ATM-INPUT NOT = 1 AND ATM-INPUT NOT = 2 THEN GO TO 
-           ATM-PROMPT
+           IF ATM-INPUT NOT = 1 AND ATM-INPUT NOT = 2 THEN 
+           DISPLAY "=> INVALID INPUT"
+           GO TO ATM-PROMPT
            END-IF.
        
            GO TO ACC-PWD-PROMPT.
@@ -71,14 +72,18 @@
            ACCEPT ACC-INPUT FROM SYSIN
            DISPLAY "=> PASSWORD"
            ACCEPT PWD-INPUT FROM SYSIN
+           OPEN INPUT MASTER-FILE.
            GO TO USER-AUTH.                                                 
        
        USER-AUTH.
-           OPEN INPUT MASTER-FILE.
-           READ MASTER-FILE AT END GO TO ACC-PWD-PROMPT.
+           READ MASTER-FILE AT END 
+           DISPLAY "=> INCORRECT ACCOUNT/PASSWORD"
+           CLOSE MASTER-FILE
+           GO TO ACC-PWD-PROMPT.
 
-           IF ACC = ACC-INPUT AND PWD = PWD-INPUT THEN GO TO 
-           SERVICE-PROMPT
+           IF ACC = ACC-INPUT AND PWD = PWD-INPUT THEN 
+           CLOSE MASTER-FILE
+           GO TO SERVICE-PROMPT
            END-IF.
 
            GO TO USER-AUTH.
