@@ -5,11 +5,11 @@
        ENVIRONMENT DIVISION.
        INPUT-OUTPUT SECTION.
        FILE-CONTROL.
-           SELECT MASTER-FILE ASSIGN TO “master.txt”
+           SELECT MASTER-FILE ASSIGN TO "master.txt"
                ORGANIZATION IS LINE SEQUENTIAL.
-           SELECT TRANS711-FILE ASSIGN TO trans711.txt”
+           SELECT TRANS711-FILE ASSIGN TO "trans711.txt"
                ORGANIZATION IS LINE SEQUENTIAL.
-           SELECT TRANS713-FILE ASSIGN TO trans713.txt”
+           SELECT TRANS713-FILE ASSIGN TO "trans713.txt"
                ORGANIZATION IS LINE SEQUENTIAL.
               
        DATA DIVISION.
@@ -41,107 +41,110 @@
        01 ACC-INPUT PIC 9(50).
        01 PWD-INPUT PIC 9(10).
        01 SERVICE-INPUT PIC A(10).
-       01 AMT-INPUT PIC 9(5)V9(2).
+       01 AMT-INPUT PIC S9(5)V9(2) VALUE 00000.00.
+       01 CONTINUE-INPUT PIC X(10).
 
        PROCEDURE DIVISION.
        
        MAIN-PARAGRAPH.
-       DISPLAY "##############################################".
-       DISPLAY "##         Gringotts Wizarding Bank         ##".
-       DISPLAY "##                 Welcome                  ##".
-       DISPLAY "##############################################".
-       GOTO ATM-PROMPT.
+           DISPLAY "##############################################".
+           DISPLAY "##         Gringotts Wizarding Bank         ##".
+           DISPLAY "##                 Welcome                  ##".
+           DISPLAY "##############################################".
+           GO TO ATM-PROMPT.
 
        ATM-PROMPT.
-       DISPLAY "=> PLEASE CHOOSE THE ATM".
-       DISPLAY "=> PRESS 1 FOR ATM 711".
-       DISPLAY "=> PRESS 2 FOR ATM 713".
+           DISPLAY "=> PLEASE CHOOSE THE ATM".
+           DISPLAY "=> PRESS 1 FOR ATM 711".
+           DISPLAY "=> PRESS 2 FOR ATM 713".
        
-       ACCEPT ATM-INPUT FROM SYSIN
+           ACCEPT ATM-INPUT FROM SYSIN
 
-       IF ATM-INPUT != 1 && ATM-INPUT != 2 THEN GOTO ATM-PROMPT
-       END-IF.
+           IF ATM-INPUT NOT = 1 AND ATM-INPUT NOT = 2 THEN GO TO 
+           ATM-PROMPT
+           END-IF.
        
-       GOTO USER-AUTH-PROMPT.
+           GO TO ACC-PWD-PROMPT.
 
        ACC-PWD-PROMPT.
-       DISPLAY "=> ACCOUNT"
-       ACCEPT ACC-INPUT FROM SYSIN
-       DISPLAY "=> PASSWORD"
-       ACCEPT PWD-INPUT FROM SYSIN
-       GOTO USER-AUTH.
+           DISPLAY "=> ACCOUNT"
+           ACCEPT ACC-INPUT FROM SYSIN
+           DISPLAY "=> PASSWORD"
+           ACCEPT PWD-INPUT FROM SYSIN
+           GO TO USER-AUTH.                                                 
        
        USER-AUTH.
-       OPEN MASTER-FILE.
-       READ MASTER-FILE AT END GOTO ACC-PWD-PROMPT.
+           OPEN INPUT MASTER-FILE.
+           READ MASTER-FILE AT END GO TO ACC-PWD-PROMPT.
 
-       IF ACC = ACC-INPUT && PWD = PWD-INPUT THEN GOTO SERVICE-PROMPT.
-       END-IF.
+           IF ACC = ACC-INPUT AND PWD = PWD-INPUT THEN GO TO 
+           SERVICE-PROMPT
+           END-IF.
 
-       GOTO USER-AUTH.
+           GO TO USER-AUTH.
 
        SERVICE-PROMPT.
-       DISPLAY "=> PLEASE CHOOSE YOUR SERVICE"
-       DISPLAY "=> PRESS D FOR DEPOSIT"
-       DISPLAY "=> PRESS W FOR WITHDRAWAL"
-       DISPLAY "=> PRESS T FOR TRANSFER"
+           DISPLAY "=> PLEASE CHOOSE YOUR SERVICE"
+           DISPLAY "=> PRESS D FOR DEPOSIT"
+           DISPLAY "=> PRESS W FOR WITHDRAWAL"
+           DISPLAY "=> PRESS T FOR TRANSFER"
        
-       ACCEPT SERVICE-INPUT FROM SYSIN
+           ACCEPT SERVICE-INPUT FROM SYSIN
 
-       IF SERVICE-INPUT = "D" THEN GOTO DEPOSIT-HANDLER
-       END-IF.
+           IF SERVICE-INPUT = "D" THEN GO TO DEPOSIT-HANDLER
+           END-IF.
 
-       IF SERVICE-INPUT = "W" THEN GOTO WITHDRAWAL-HANDLER
-       END-IF.
+           IF SERVICE-INPUT = "W" THEN GO TO WITHDRAWAL-HANDLER
+           END-IF.
 
-       IF SERVICE-INPUT = "T" THEN GOTO TRANSFER-HANDLER
-       END-IF.
+           IF SERVICE-INPUT = "T" THEN GO TO TRANSFER-HANDLER
+           END-IF.
 
-       GOTO SERVICE-PROMPT.
+           GO TO SERVICE-PROMPT.
 
        DEPOSIT-HANDLER.
-       DISPLAY "=> AMOUNT"
-       ACCEPT AMT-INPUT FROM SYSIN
-       IF AMT-INPUT < 0 THEN
+           DISPLAY "=> AMOUNT"
+           ACCEPT AMT-INPUT FROM SYSIN
+           IF AMT-INPUT < 0 THEN
            DISPLAY "INCORRECT AMOUNT"
-           GOTO DEPOSIT-HANDLER
-       END-IF.
-      * TODO: IMPLEMENT DEPOSIT-HANDLER
+           GO TO DEPOSIT-HANDLER
+           END-IF.
+      *    TODO: IMPLEMENT DEPOSIT-HANDLER
 
-       GOTO CONTINUE-PROMPT.
+           GO TO CONTINUE-PROMPT.
 
        WITHDRAWAL-HANDLER.
-       DISPLAY "=> AMOUNT"
-       ACCEPT AMT-INPUT FROM SYSIN
-       IF AMT-INPUT < 0 THEN
+           DISPLAY "=> AMOUNT"
+           ACCEPT AMT-INPUT FROM SYSIN
+           IF AMT-INPUT < 0 THEN
            DISPLAY "INCORRECT AMOUNT"
-           GOTO DEPOSIT-HANDLER
-       END-IF.
+           GO TO DEPOSIT-HANDLER
+           END-IF.
 
       * TODO: IMPLEMENT WITHDRAWAL-HANDLER
 
-       GOTO CONTINUE-PROMPT.
+           GO TO CONTINUE-PROMPT.
 
        TRANSFER-HANDLER.
-       DISPLAY "=> AMOUNT"
-       ACCEPT AMT-INPUT FROM SYSIN
-       IF AMT-INPUT < 0 THEN
+           DISPLAY "=> AMOUNT"
+           ACCEPT AMT-INPUT FROM SYSIN
+           IF AMT-INPUT < 0 THEN
            DISPLAY "INCORRECT AMOUNT"
-           GOTO DEPOSIT-HANDLER
-       END-IF.
+           GO TO DEPOSIT-HANDLER
+           END-IF.
 
       * TODO: IMPLEMENT TRANSFER-HANDLER
 
-       GOTO CONTINUE-PROMPT.
+           GO TO CONTINUE-PROMPT.
 
        CONTINUE-PROMPT.
-       DISPLAY "=> CONTINUE?"
-       ACCEPT CONTINUE-INPUT FROM SYSIN
-       IF CONTINUE-INPUT NOT = "Y" AND CONTINUE-INPUT NOT = "N" THEN
-       GOTO CONTINUE-PROMPT
-       END-IF. 
+           DISPLAY "=> CONTINUE?"
+           ACCEPT CONTINUE-INPUT FROM SYSIN
+           IF CONTINUE-INPUT NOT = "Y" AND CONTINUE-INPUT NOT = "N" THEN
+           GO TO CONTINUE-PROMPT
+           END-IF. 
 
-       STOP RUN.
+           STOP RUN.
 
 
 
