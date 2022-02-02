@@ -219,9 +219,9 @@
            READ MASTER-FILE
                                                                         
            IF ACC = ACC-INPUT THEN
+           CLOSE MASTER-FILE
            IF BAL < AMT-INPUT THEN
            DISPLAY "=> INSUFFICIENT BALANCE"
-           CLOSE MASTER-FILE
            GO TO TRANSFER-AMOUNT-PROMPT
            END-IF
            GO TO RECORD-TRANSFER-TXN
