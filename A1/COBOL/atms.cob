@@ -1,0 +1,154 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.   ATMS.
+       AUTHOR.       NIKUNJ TANEJA.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT MASTER-FILE ASSIGN TO “master.txt”
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT TRANS711-FILE ASSIGN TO trans711.txt”
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT TRANS713-FILE ASSIGN TO trans713.txt”
+               ORGANIZATION IS LINE SEQUENTIAL.
+              
+       DATA DIVISION.
+       FILE SECTION.
+       FD MASTER-FILE.
+       01  MASTER-RECORD.
+           05 ACC-NAME PIC X(20).
+           05 ACC      PIC 9(16).
+           05 PWD      PIC 9(6).
+           05 SIG      PIC S.
+           05 BAL      PIC 9(15).
+
+       FD TRANS711-FILE.
+       01 TRANS711-RECORD.
+           05 ACC-711  PIC X(16).
+           05 OP-711   PIC A.
+           05 AMT-711  PIC 9(7).
+           05 TS-711   PIC 9(5).
+
+       FD TRANS713-FILE.
+       01 TRANS713-RECORD.
+           05 ACC-713  PIC X(16).
+           05 OP-713   PIC A.
+           05 AMT-713  PIC 9(7).
+           05 TS-713   PIC 9(5).
+
+       WORKING-STORAGE SECTION.
+       01 ATM-INPUT PIC 9(10).
+       01 ACC-INPUT PIC 9(50).
+       01 PWD-INPUT PIC 9(10).
+       01 SERVICE-INPUT PIC A(10).
+       01 AMT-INPUT PIC 9(5)V9(2).
+
+       PROCEDURE DIVISION.
+       
+       MAIN-PARAGRAPH.
+       DISPLAY "##############################################".
+       DISPLAY "##         Gringotts Wizarding Bank         ##".
+       DISPLAY "##                 Welcome                  ##".
+       DISPLAY "##############################################".
+       GOTO ATM-PROMPT.
+
+       ATM-PROMPT.
+       DISPLAY "=> PLEASE CHOOSE THE ATM".
+       DISPLAY "=> PRESS 1 FOR ATM 711".
+       DISPLAY "=> PRESS 2 FOR ATM 713".
+       
+       ACCEPT ATM-INPUT FROM SYSIN
+
+       IF ATM-INPUT != 1 && ATM-INPUT != 2 THEN GOTO ATM-PROMPT
+       END-IF.
+       
+       GOTO USER-AUTH-PROMPT.
+
+       ACC-PWD-PROMPT.
+       DISPLAY "=> ACCOUNT"
+       ACCEPT ACC-INPUT FROM SYSIN
+       DISPLAY "=> PASSWORD"
+       ACCEPT PWD-INPUT FROM SYSIN
+       GOTO USER-AUTH.
+       
+       USER-AUTH.
+       OPEN MASTER-FILE.
+       READ MASTER-FILE AT END GOTO ACC-PWD-PROMPT.
+
+       IF ACC = ACC-INPUT && PWD = PWD-INPUT THEN GOTO SERVICE-PROMPT.
+       END-IF.
+
+       GOTO USER-AUTH.
+
+       SERVICE-PROMPT.
+       DISPLAY "=> PLEASE CHOOSE YOUR SERVICE"
+       DISPLAY "=> PRESS D FOR DEPOSIT"
+       DISPLAY "=> PRESS W FOR WITHDRAWAL"
+       DISPLAY "=> PRESS T FOR TRANSFER"
+       
+       ACCEPT SERVICE-INPUT FROM SYSIN
+
+       IF SERVICE-INPUT = "D" THEN GOTO DEPOSIT-HANDLER
+       END-IF.
+
+       IF SERVICE-INPUT = "W" THEN GOTO WITHDRAWAL-HANDLER
+       END-IF.
+
+       IF SERVICE-INPUT = "T" THEN GOTO TRANSFER-HANDLER
+       END-IF.
+
+       GOTO SERVICE-PROMPT.
+
+       DEPOSIT-HANDLER.
+       DISPLAY "=> AMOUNT"
+       ACCEPT AMT-INPUT FROM SYSIN
+       IF AMT-INPUT < 0 THEN
+           DISPLAY "INCORRECT AMOUNT"
+           GOTO DEPOSIT-HANDLER
+       END-IF.
+      * TODO: IMPLEMENT DEPOSIT-HANDLER
+
+       GOTO CONTINUE-PROMPT.
+
+       WITHDRAWAL-HANDLER.
+       DISPLAY "=> AMOUNT"
+       ACCEPT AMT-INPUT FROM SYSIN
+       IF AMT-INPUT < 0 THEN
+           DISPLAY "INCORRECT AMOUNT"
+           GOTO DEPOSIT-HANDLER
+       END-IF.
+
+      * TODO: IMPLEMENT WITHDRAWAL-HANDLER
+
+       GOTO CONTINUE-PROMPT.
+
+       TRANSFER-HANDLER.
+       DISPLAY "=> AMOUNT"
+       ACCEPT AMT-INPUT FROM SYSIN
+       IF AMT-INPUT < 0 THEN
+           DISPLAY "INCORRECT AMOUNT"
+           GOTO DEPOSIT-HANDLER
+       END-IF.
+
+      * TODO: IMPLEMENT TRANSFER-HANDLER
+
+       GOTO CONTINUE-PROMPT.
+
+       CONTINUE-PROMPT.
+       DISPLAY "=> CONTINUE?"
+       ACCEPT CONTINUE-INPUT FROM SYSIN
+       IF CONTINUE-INPUT NOT = "Y" AND CONTINUE-INPUT NOT = "N" THEN
+       GOTO CONTINUE-PROMPT
+       END-IF. 
+
+       STOP RUN.
+
+
+
+       
+       
+
+       
+
+       
+       
