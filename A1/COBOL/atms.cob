@@ -19,7 +19,7 @@
            05 ACC-NAME PIC X(20).
            05 ACC      PIC 9(16).
            05 PWD      PIC 9(6).
-           05 SIG      PIC S.
+           05 SIG      PIC X.
            05 BAL      PIC 9(15).
 
        FD TRANS711-FILE.
@@ -37,10 +37,10 @@
            05 TS-713   PIC 9(5).
 
        WORKING-STORAGE SECTION.
-       01 ATM-INPUT PIC 9(10).
-       01 ACC-INPUT PIC 9(50).
-       01 PWD-INPUT PIC 9(10).
-       01 SERVICE-INPUT PIC A(10).
+       01 ATM-INPUT PIC X(10).
+       01 ACC-INPUT PIC X(50).
+       01 PWD-INPUT PIC X(10).
+       01 SERVICE-INPUT PIC X(10).
        01 AMT-INPUT PIC S9(5)V9(2) VALUE 00000.00.
        01 CONTINUE-INPUT PIC X(10).
 
