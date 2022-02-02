@@ -3,14 +3,14 @@
 #include<string.h>
 #include<math.h>
 
-#define MASTER_FILE_PATH            "test/master.txt"
-#define TRANS711_FILE_PATH          "test/trans711.txt"
-#define TRANS713_FILE_PATH          "test/trans713.txt"
-#define SORTED711_FILE_PATH         "test/transSorted711.txt"
-#define SORTED713_FILE_PATH         "test/transSorted713.txt"
-#define MERGED_TXN_FILE_PATH        "test/transSorted.txt"
-#define UPDATED_MASTER_FILE_PATH    "test/updatedMaster.txt"
-#define NEG_REPORT_FILE_PATH        "test/negReport.txt"
+#define MASTER_FILE_PATH            "master.txt"
+#define TRANS711_FILE_PATH          "trans711.txt"
+#define TRANS713_FILE_PATH          "trans713.txt"
+#define SORTED711_FILE_PATH         "transSorted711.txt"
+#define SORTED713_FILE_PATH         "transSorted713.txt"
+#define MERGED_TXN_FILE_PATH        "transSorted.txt"
+#define UPDATED_MASTER_FILE_PATH    "updatedMaster.txt"
+#define NEG_REPORT_FILE_PATH        "negReport.txt"
 
 #define NAME_SIZE          20
 #define ACC_SIZE           16

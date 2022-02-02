@@ -2,9 +2,9 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define MASTER_FILE_PATH    "test/master.txt"
-#define TRANS711_FILE_PATH  "test/trans711.txt"
-#define TRANS713_FILE_PATH  "test/trans713.txt"
+#define MASTER_FILE_PATH    "master.txt"
+#define TRANS711_FILE_PATH  "trans711.txt"
+#define TRANS713_FILE_PATH  "trans713.txt"
 
 #define NAME_SIZE          20
 #define ACC_SIZE           16
@@ -425,8 +425,8 @@ int main() {
             auth_err = authenticate_user(acc, pwd);
         } while (auth_err != SUCCESS);
         
-        // if (auth_err == NEG_BALANCE)
-        //     continue;
+        if (auth_err == NEG_BALANCE)
+            continue;
         
         do {
             service = prompt_user(SERVICE_PROMPT);
