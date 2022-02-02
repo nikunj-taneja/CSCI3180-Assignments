@@ -43,6 +43,13 @@ typedef struct {
     char balance[BALANCE_SIZE+1];
 } MasterRecord;
 
+void create_empty_files() {
+    FILE* trans_711 = fopen(TRANS711_FILE_PATH, "w");
+    FILE* trans_713 = fopen(TRANS713_FILE_PATH, "w");
+    fclose(trans711);
+    fclose(trans713);
+}
+
 void print_welcome_msg() {
     printf("##############################################\n");
     printf("##         Gringotts Wizarding Bank         ##\n");
@@ -413,6 +420,7 @@ int main() {
     int service_code = 0;
     char *atm, *acc, *pwd, *service, *cont;
     
+    create_empty_files();
     print_welcome_msg();
     do {
         do {
