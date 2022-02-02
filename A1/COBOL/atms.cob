@@ -39,12 +39,14 @@
        WORKING-STORAGE SECTION.
        01 ATM-INPUT PIC X(10).
        01 ACC-INPUT PIC X(50).
+       01 TARGET-ACC-INPUT PIC X(50).
        01 PWD-INPUT PIC X(10).
        01 SERVICE-INPUT PIC X(10).
        01 AMT-INPUT PIC S9(6)V9(2) VALUE 00000.00.
        01 AMT-INTEGER PIC 9(7).
        01 CONTINUE-INPUT PIC X(10).
        01 TXN-TIMESTAMP PIC 9(5) VALUE 00000.
+       
 
        PROCEDURE DIVISION.
        
@@ -180,14 +182,83 @@
            GO TO CONTINUE-PROMPT.
 
        TRANSFER-HANDLER.
-           DISPLAY "=> AMOUNT"
-           ACCEPT AMT-INPUT FROM SYSIN
-           IF AMT-INPUT < 0 THEN
-           DISPLAY "INCORRECT AMOUNT"
-           GO TO DEPOSIT-HANDLER
+           DISPLAY "=> TARGET ACCOUNT"  
+           ACCEPT TARGET-ACC-INPUT FROM SYSIN.        
+           OPEN INPUT MASTER-FILE.
+           GO TO VALIDATE-TARGET-ACC.
+       
+       VALIDATE-TARGET-ACC.
+           READ MASTER-FILE AT END 
+           DISPLAY "=> TARGET ACCOUNT DOES NOT EXIST"
+           CLOSE MASTER-FILE
+           GO TO TRANSFER-HANDLER.
+
+           IF TARGET-ACC-INPUT = ACC THEN
+           CLOSE MASTER-FILE 
+           IF TARGET-ACC-INPUT = ACC-INPUT THEN
+           DISPLAY "=> YOU CANNOT TRANSFER TO YOURSELF"
+           GO TO TRANSFER-HANDLER
+           END-IF
+           GO TO TRANSFER-AMOUNT-PROMPT
            END-IF.
 
-      * TODO: IMPLEMENT TRANSFER-HANDLER
+           GO TO VALIDATE-TARGET-ACC.
+        
+       TRANSFER-AMOUNT-PROMPT.
+           DISPLAY "=> AMOUNT"
+           ACCEPT AMT-INPUT FROM SYSIN
+           COMPUTE AMT-INTEGER = AMT-INPUT * 100.00.
+           IF AMT-INPUT < 0 THEN
+           DISPLAY "INCORRECT AMOUNT"
+           GO TO TRANSFER-AMOUNT-PROMPT
+           END-IF.
+           OPEN INPUT MASTER-FILE.
+           GO TO VALIDATE-SENDER-BALANCE.
+       
+       VALIDATE-SENDER-BALANCE.
+           READ MASTER-FILE
+                                                                        
+           IF ACC = ACC-INPUT THEN
+           IF BAL < AMT-INPUT THEN
+           DISPLAY "=> INSUFFICIENT BALANCE"
+           CLOSE MASTER-FILE
+           GO TO TRANSFER-AMOUNT-PROMPT
+           END-IF
+           GO TO RECORD-TRANSFER-TXN
+           END-IF.
+
+           GO TO VALIDATE-SENDER-BALANCE.
+
+       RECORD-TRANSFER-TXN.
+           IF ATM-INPUT = 1 THEN
+           SET ACC-711 TO ACC-INPUT
+           MOVE "W" TO OP-711
+           SET AMT-711 TO AMT-INTEGER
+           SET TS-711 TO TXN-TIMESTAMP
+           WRITE TRANS711-RECORD
+           COMPUTE TXN-TIMESTAMP = TXN-TIMESTAMP + 1
+           SET ACC-711 TO TARGET-ACC-INPUT
+           MOVE "D" TO OP-711
+           SET AMT-711 TO AMT-INTEGER
+           SET TS-711 TO TXN-TIMESTAMP
+           WRITE TRANS711-RECORD
+           COMPUTE TXN-TIMESTAMP = TXN-TIMESTAMP + 1
+           END-IF.
+
+           IF ATM-INPUT = 2 THEN
+           SET ACC-713 TO ACC-INPUT
+           MOVE "W" TO OP-713
+           SET AMT-713 TO AMT-INTEGER
+           SET TS-713 TO TXN-TIMESTAMP
+           WRITE TRANS713-RECORD
+           COMPUTE TXN-TIMESTAMP = TXN-TIMESTAMP + 1
+           SET ACC-713 TO TARGET-ACC-INPUT
+           MOVE "D" TO OP-713
+           SET AMT-713 TO AMT-INTEGER
+           SET TS-713 TO TXN-TIMESTAMP
+           WRITE TRANS713-RECORD
+           COMPUTE TXN-TIMESTAMP = TXN-TIMESTAMP + 1
+           END-IF.
 
            GO TO CONTINUE-PROMPT.
 
@@ -208,13 +279,3 @@
 
            DISPLAY "=> INVALID INPUT".                 
            GO TO CONTINUE-PROMPT.
-
-
-
-       
-       
-
-       
-
-       
-       
