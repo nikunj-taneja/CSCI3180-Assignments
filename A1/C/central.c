@@ -23,51 +23,51 @@
 #define TXN_LINE_SIZE      30
 
 
-// char* itoa(int num, char* buffer, int base) {
-//     int curr = 0;
+char* itoa(int num, char* buffer, int base) {
+    int curr = 0;
  
-//     if (num == 0) {
-//         // Base case
-//         buffer[curr++] = '0';
-//         buffer[curr] = '\0';
-//         return buffer;
-//     }
+    if (num == 0) {
+        // Base case
+        buffer[curr++] = '0';
+        buffer[curr] = '\0';
+        return buffer;
+    }
  
-//     int num_digits = 0;
+    int num_digits = 0;
  
-//     if (num < 0) {
-//         if (base == 10) {
-//             num_digits ++;
-//             buffer[curr] = '-';
-//             curr ++;
-//             // Make it positive and finally add the minus sign
-//             num *= -1;
-//         }
-//         else
-//             // Unsupported base. Return NULL
-//             return NULL;
-//     }
+    if (num < 0) {
+        if (base == 10) {
+            num_digits ++;
+            buffer[curr] = '-';
+            curr ++;
+            // Make it positive and finally add the minus sign
+            num *= -1;
+        }
+        else
+            // Unsupported base. Return NULL
+            return NULL;
+    }
  
-//     num_digits += (int)floor(log(num) / log(base)) + 1;
+    num_digits += (int)floor(log(num) / log(base)) + 1;
  
-//     // Go through the digits one by one
-//     // from left to right
-//     while (curr < num_digits) {
-//         // Get the base value. For example, 10^2 = 1000, for the third digit
-//         int base_val = (int) pow(base, num_digits-1-curr);
+    // Go through the digits one by one
+    // from left to right
+    while (curr < num_digits) {
+        // Get the base value. For example, 10^2 = 1000, for the third digit
+        int base_val = (int) pow(base, num_digits-1-curr);
  
-//         // Get the numerical value
-//         int num_val = num / base_val;
+        // Get the numerical value
+        int num_val = num / base_val;
  
-//         char value = num_val + '0';
-//         buffer[curr] = value;
+        char value = num_val + '0';
+        buffer[curr] = value;
  
-//         curr ++;
-//         num -= base_val * num_val;
-//     }
-//     buffer[curr] = '\0';
-//     return buffer;
-// }
+        curr ++;
+        num -= base_val * num_val;
+    }
+    buffer[curr] = '\0';
+    return buffer;
+}
 
 ////////////////////////////////////////////////
 // SORT FUNCTION
@@ -424,36 +424,36 @@ void report_negative_balance_accs(char* updated_master, char* neg_report) {
     fclose(fp_updated_master);
 }
 
-void update_single_record(char* acc, long long int delta, char* updated_master) {
-    // open updatedMaster.txt in r+ mode for editing
-    FILE* fp_updated_master = fopen(updated_master, "r+");
-    if (fp_updated_master == NULL) {
-        perror(updated_master);
-        exit(1);
-    }
+// void update_single_record(char* acc, long long int delta, char* updated_master) {
+//     // open updatedMaster.txt in r+ mode for editing
+//     FILE* fp_updated_master = fopen(updated_master, "r+");
+//     if (fp_updated_master == NULL) {
+//         perror(updated_master);
+//         exit(1);
+//     }
 
-    int found = 0;
-    size_t num_chars = 0, master_line_size = MASTER_LINE_SIZE;
-    char *master_line = (char *) malloc(sizeof(char) * (MASTER_LINE_SIZE+1));
+//     int found = 0;
+//     size_t num_chars = 0, master_line_size = MASTER_LINE_SIZE;
+//     char *master_line = (char *) malloc(sizeof(char) * (MASTER_LINE_SIZE+1));
     
-    while (!found) {
-        num_chars = getline(&master_line, &master_line_size, fp_updated_master);
-        MasterRecord* master_rec = construct_master_record(master_line);
+//     while (!found) {
+//         num_chars = getline(&master_line, &master_line_size, fp_updated_master);
+//         MasterRecord* master_rec = construct_master_record(master_line);
         
-        if (strcmp(master_rec->acc, acc) == 0) {
-            fseek(fp_updated_master, -num_chars, SEEK_CUR);
-            long long int updated_balance = master_rec->balance + delta;
-            char *balance_str = format_balance(updated_balance, BALANCE_SIZE);
-            fprintf(fp_updated_master, "%s%s%s%s\r\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
-            found = 1;
-            free(balance_str);
-        }
-        free(master_rec);
-    }
+//         if (strcmp(master_rec->acc, acc) == 0) {
+//             fseek(fp_updated_master, -num_chars, SEEK_CUR);
+//             long long int updated_balance = master_rec->balance + delta;
+//             char *balance_str = format_balance(updated_balance, BALANCE_SIZE);
+//             fprintf(fp_updated_master, "%s%s%s%s\r\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
+//             found = 1;
+//             free(balance_str);
+//         }
+//         free(master_rec);
+//     }
 
-    free(master_line);
-    fclose(fp_updated_master);
-}
+//     free(master_line);
+//     fclose(fp_updated_master);
+// }
 
 void update_master(char* txn, char* master, char* updated_master) {
     FILE* fp_txn = fopen(txn, "r");
@@ -476,62 +476,161 @@ void update_master(char* txn, char* master, char* updated_master) {
 
     size_t txn_line_size = TXN_LINE_SIZE;
     size_t master_line_size = MASTER_LINE_SIZE;
-    size_t txn_line_chars, master_line_chars;
+    int txn_line_chars, master_line_chars;
     char *txn_line = (char *) malloc(sizeof(char) * txn_line_size);
     char *master_line = (char *) malloc(sizeof(char) * master_line_size);
 
     char *cur_acc = malloc(sizeof(char) * (ACC_SIZE+1));
     char *prev_acc = malloc(sizeof(char) * (ACC_SIZE+1));
 
-    TransactionRecord* txn_rec;
-
     long long int delta = 0;
 
-    int first_line = 1;
+    int first_line = 1, updated = 0;
 
-    // copy all the lines from old master.txt to updatedMaster.txt
-    while (getline(&master_line, &master_line_size, fp_master) != -1) {
-        fprintf(fp_updated_master, "%s", master_line);
-    }
-    fclose(fp_master);
-    fclose(fp_updated_master);
-
-    // read transactions one-by-one and update stale records in updatedMaster.txt
+    // try to read a line from txn file
     txn_line_chars = getline(&txn_line, &txn_line_size, fp_txn);
-    
-    while (txn_line_chars != -1) {
-        txn_rec = construct_txn_record(txn_line);
+    if (txn_line_chars > 0) {
+        // parse the txn line
+        TransactionRecord* txn_rec = construct_txn_record(txn_line);
+        
+        // init currect and previous account variables
         strncpy(cur_acc, txn_line, ACC_SIZE);
         cur_acc[ACC_SIZE] = '\0';
-        if (first_line) {
-            first_line = 0;
-        } else if (strcmp(cur_acc, prev_acc) != 0) {
-            update_single_record(prev_acc, delta, updated_master);
-            delta = 0;
-        }
+        strncpy(prev_acc, txn_line, ACC_SIZE);
+        prev_acc[ACC_SIZE] = '\0';
 
-        // process current transaction
+        // init delta
         if (txn_rec->op == 'D')
             delta += txn_rec->amount;
         else
             delta -= txn_rec->amount;
-        
-        // mark current account as previous
-        strncpy(prev_acc, txn_line, ACC_SIZE);
 
-        // read next line
-        txn_line_chars = getline(&txn_line, &txn_line_size, fp_txn);
+        free(txn_rec);
     }
 
-    if (delta != 0) {
-        update_single_record(prev_acc, delta, updated_master);
+    
+    while (getline(&master_line, &master_line_size, fp_master) != -1) {
+        MasterRecord* master_rec = construct_master_record(master_line);
+        // printf("%s\n", master_rec->acc);
+        updated = 0;
+
+        if (strcmp(cur_acc, master_rec->acc) == 0) {
+            // read all transactions related to current account and update the record
+            do {
+                // try to read a line from txn file
+                txn_line_chars = getline(&txn_line, &txn_line_size, fp_txn);
+                printf("chars: %d\n", txn_line_chars);
+                
+                if (txn_line_chars < 0) {
+                    // EOF
+                    if (delta != 0 && strcmp(prev_acc, cur_acc) == 0) {
+                        // update record and write to updated master file
+                        long long int updated_balance = master_rec->balance + delta;
+                        char *balance_str = format_balance(updated_balance, BALANCE_SIZE);
+                        fprintf(fp_updated_master, "%s%s%s%s\r\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
+                        free(balance_str);
+
+                        // reset delta
+                        delta = 0;
+
+                        // mark account as updated
+                        updated = 1;
+
+                        printf("%s %s\n", prev_acc, master_rec->acc);
+                        printf("cur_acc: %s\n", cur_acc);
+                    }
+                    break;
+                }
+
+                // parse the txn line
+                TransactionRecord* txn_rec = construct_txn_record(txn_line);
+
+                // copy the previous account before updating current account
+                strncpy(prev_acc, cur_acc, ACC_SIZE);
+                prev_acc[ACC_SIZE] = '\0';
+                
+                // update current account
+                strncpy(cur_acc, txn_line, ACC_SIZE);
+                cur_acc[ACC_SIZE] = '\0';
+                
+                // check if all relevant transactions have been processed yet
+                if (strcmp(prev_acc, cur_acc) != 0) {
+                    // update record and write to updated master file
+                    long long int updated_balance = master_rec->balance + delta;
+                    char *balance_str = format_balance(updated_balance, BALANCE_SIZE);
+                    fprintf(fp_updated_master, "%s%s%s%s\r\n", master_rec->name, master_rec->acc, master_rec->pwd, balance_str);
+                    free(balance_str);
+
+                    // reset delta
+                    delta = 0;
+
+                    // mark account as updated
+                    updated = 1;
+
+                    printf("%s %s\n", prev_acc, master_rec->acc);
+                    printf("cur_acc: %s\n", cur_acc);
+                }
+                
+                // process current transaction for next update
+                if (txn_rec->op == 'D')
+                    delta += txn_rec->amount;
+                else
+                    delta -= txn_rec->amount;
+                
+                free(txn_rec);
+                
+            } while (!updated);
+
+        } else {
+            // write the line to updated master file as is
+            fprintf(fp_updated_master, "%s", master_line);
+        }
+        free(master_rec);
     }
 
+    // free(txn_line);
+    // free(master_line);
+    
+    fclose(fp_master);
+    fclose(fp_updated_master);
     fclose(fp_txn);
-    free(txn_line);
-    free(master_line);
-    free(cur_acc);
-    free(prev_acc);
+
+    // // read transactions one-by-one and update stale records in updatedMaster.txt
+    // txn_line_chars = getline(&txn_line, &txn_line_size, fp_txn);
+    
+    // while (txn_line_chars != -1) {
+    //     txn_rec = construct_txn_record(txn_line);
+    //     strncpy(cur_acc, txn_line, ACC_SIZE);
+    //     cur_acc[ACC_SIZE] = '\0';
+    //     if (first_line) {
+    //         first_line = 0;
+    //     } else if (strcmp(cur_acc, prev_acc) != 0) {
+    //         update_single_record(prev_acc, delta, updated_master);
+    //         delta = 0;
+    //     }
+
+    //     // process current transaction
+    //     if (txn_rec->op == 'D')
+    //         delta += txn_rec->amount;
+    //     else
+    //         delta -= txn_rec->amount;
+        
+    //     // mark current account as previous
+    //     strncpy(prev_acc, txn_line, ACC_SIZE);
+
+    //     // read next line
+    //     txn_line_chars = getline(&txn_line, &txn_line_size, fp_txn);
+    // }
+
+    // if (delta != 0) {
+    //     update_single_record(prev_acc, delta, updated_master);
+    // }
+
+    
+    // free(txn_line);
+    // free(master_line);
+    // free(cur_acc);
+    // free(prev_acc);
 }
 
 int main() {
