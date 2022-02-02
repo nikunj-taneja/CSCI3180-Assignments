@@ -408,7 +408,7 @@ int handle_service(int service, char* atm, char* acc, int timestamp) {
 }
 
 int main() {
-    int auth_err = 0;
+    int auth_err = SUCCESS;
     int timestamp = 0;
     int service_code = 0;
     char *atm, *acc, *pwd, *service, *cont;
@@ -423,7 +423,7 @@ int main() {
             acc = prompt_user(ACCOUNT_PROMPT);
             pwd = prompt_user(PASSWORD_PROMPT);
             auth_err = authenticate_user(acc, pwd);
-        } while (auth_err != SUCCESS);
+        } while (auth_err == INCORRECT_ACC_PWD);
         
         if (auth_err == NEG_BALANCE)
             continue;
