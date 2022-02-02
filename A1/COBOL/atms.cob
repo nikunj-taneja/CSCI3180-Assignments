@@ -24,14 +24,14 @@
 
        FD TRANS711-FILE.
        01 TRANS711-RECORD.
-           05 ACC-711  PIC X(16).
+           05 ACC-711  PIC 9(16).
            05 OP-711   PIC A.
            05 AMT-711  PIC 9(7).
            05 TS-711   PIC 9(5).
 
        FD TRANS713-FILE.
        01 TRANS713-RECORD.
-           05 ACC-713  PIC X(16).
+           05 ACC-713  PIC 9(16).
            05 OP-713   PIC A.
            05 AMT-713  PIC 9(7).
            05 TS-713   PIC 9(5).
