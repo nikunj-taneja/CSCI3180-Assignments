@@ -44,8 +44,8 @@ typedef struct {
 } MasterRecord;
 
 void create_empty_files() {
-    FILE* trans_711 = fopen(TRANS711_FILE_PATH, "w");
-    FILE* trans_713 = fopen(TRANS713_FILE_PATH, "w");
+    FILE* trans711 = fopen(TRANS711_FILE_PATH, "w");
+    FILE* trans713 = fopen(TRANS713_FILE_PATH, "w");
     fclose(trans711);
     fclose(trans713);
 }
