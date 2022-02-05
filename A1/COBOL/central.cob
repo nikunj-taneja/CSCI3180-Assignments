@@ -97,7 +97,7 @@
 
        WORKING-STORAGE SECTION.
        01 PREV-ACC PIC 9(16).
-       01 DELTA PIC 9(15) VALUE 000000000000000.
+       01 DELTA PIC S9(20) VALUES 0.
        01 NEW-BAL PIC 9(20).
        
 
@@ -279,6 +279,9 @@
        CHECK-BALANCE.
            READ UPDATED-MASTER-FILE AT END GO TO CENTRAL-END.
            IF SIG-UPDATED = '-' THEN
+           MOVE "Name: " TO NAME-LABEL
+           MOVE " Account: " TO ACC-LABEL
+           MOVE " Balance: " TO BAL-LABEL                              
            MOVE ACC-NAME-UPDATED TO NAME-NEG
            SET ACC-NEG TO ACC-UPDATED
            SET BAL-NEG TO BAL-UPDATED
