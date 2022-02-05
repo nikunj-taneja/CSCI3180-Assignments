@@ -86,12 +86,12 @@
 
        FD NEG-REPORT.
        01 NEG-REPORT-RECORD.
-           05 NAME-LABEL PIC X(6) VALUE "Name: ".
+           05 NAME-LABEL PIC X(6).
            05 NAME-NEG   PIC X(20).
-           05 ACC-LABEL  PIC X(17) VALUE " Account Number: ".
+           05 ACC-LABEL  PIC X(10).
            05 ACC-NEG    PIC 9(16).
-           05 BAL-LABEL  PIC X(10) VALUE " Balance: ".
-           05 SIG-NEG    PIC X(1) VALUE "-".
+           05 BAL-LABEL  PIC X(10).
+           05 SIG-NEG    PIC X(1).
            05 BAL-NEG    PIC 9(15).
 
 
@@ -281,7 +281,8 @@
            IF SIG-UPDATED = '-' THEN
            MOVE "Name: " TO NAME-LABEL
            MOVE " Account: " TO ACC-LABEL
-           MOVE " Balance: " TO BAL-LABEL                              
+           MOVE " Balance: " TO BAL-LABEL 
+           MOVE '-' TO SIG-NEG                         
            MOVE ACC-NAME-UPDATED TO NAME-NEG
            SET ACC-NEG TO ACC-UPDATED
            SET BAL-NEG TO BAL-UPDATED
