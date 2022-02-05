@@ -1,3 +1,21 @@
+/*
+
+* CSCI3180 Principles of Programming Languages *
+* --- Declaration --- *
+* I declare that the assignment here submitted is original except for source
+* material explicitly acknowledged. I also acknowledge that I am aware of
+* University policy and regulations on honesty in academic work, and of the
+* disciplinary guidelines and procedures applicable to breaches of such policy
+* and regulations, as contained in the website
+* http://www.cuhk.edu.hk/policy/academichonesty/ *
+* Assignment 1
+* Name : Taneja Nikunj
+* Student ID : 1155123371
+* Email Addr : ntaneja9@cse.cuhk.edu.hk
+
+*/
+
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -22,12 +40,14 @@
 #define MASTER_LINE_SIZE   60
 #define TXN_LINE_SIZE      30
 
+
+////////////////////////////////////////////////
+// begin sort.c
 void read_str(char input_line[], char output_line[], int start_index, int length) {
     strncpy(output_line, input_line + start_index, length);
     output_line[length] = '\0';
 }
 
-////////////////////////////////////////////////
 // global variable
 int MAX_TRAN = 10;
 
@@ -128,6 +148,7 @@ void sort_transaction(char path[], char sort_path[]){
     struct transaction ** transactions_sort = sort_transactions(transactions);
     save_transactions(transactions_sort, sort_path);
 }
+// end sort.c
 /////////////////////////////////////////////// 
 
 
@@ -164,6 +185,8 @@ long long int to_int(char* str, int size) {
     return num;
 }
 
+// Accepts a string and formats it 
+// to size with leading 0's
 char* format_balance(long long int num, int size) {
     // initialize a null-terminated string of all 0's
     char* str = (char *) malloc(sizeof(char) * (size+1));
@@ -188,6 +211,8 @@ char* format_balance(long long int num, int size) {
     return str;
 }
 
+
+// Constructs a transaction record by parsing its string representation
 TransactionRecord* construct_txn_record(char *line) {
     TransactionRecord* record = (TransactionRecord *) malloc(sizeof(TransactionRecord));
     char *amount_str = (char *) malloc(sizeof(char) * (AMOUNT_SIZE+1));
@@ -208,6 +233,7 @@ TransactionRecord* construct_txn_record(char *line) {
     return record;
 }
 
+// Constructs a master record by parsing its string representation
 MasterRecord* construct_master_record(char *line) {
     MasterRecord* record = (MasterRecord *) malloc(sizeof(MasterRecord));
     char *balance_str = (char *) malloc(sizeof(char) * (BALANCE_SIZE+1));
@@ -227,6 +253,7 @@ MasterRecord* construct_master_record(char *line) {
     return record;
 }
 
+// Merges two sorted transactions files and writes the result to a new file
 void merge_transactions(char* infile1, char* infile2, char* outfile) {
     FILE* fp_in1 = fopen(infile1, "r");
     FILE* fp_in2 = fopen(infile2, "r");
@@ -291,6 +318,7 @@ void merge_transactions(char* infile1, char* infile2, char* outfile) {
     }
 }
 
+// Generates negReport.txt given the path to updatedMaster.txt
 void report_negative_balance_accs(char* updated_master, char* neg_report) {
     // open updatedMaster.txt in read mode
     FILE* fp_updated_master = fopen(updated_master, "r");
@@ -326,6 +354,7 @@ void report_negative_balance_accs(char* updated_master, char* neg_report) {
     fclose(fp_updated_master);
 }
 
+// Updates the records in master.txt using transSorted.txt
 void update_master(char* txn, char* master, char* updated_master) {
     FILE* fp_txn = fopen(txn, "r");
     if (fp_txn == NULL) {
