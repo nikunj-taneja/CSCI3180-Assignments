@@ -231,6 +231,8 @@
            END-IF.
       
       *    CURRENT TXN IS NOT OF THE SAME ACCOUNT
+           DISPLAY "UPDATING".
+           DISPLAY PREV-ACC.
            SET PREV-ACC TO ACC-SORTED.
            MOVE ACC-NAME TO ACC-NAME-UPDATED.
            SET ACC-UPDATED TO ACC.
