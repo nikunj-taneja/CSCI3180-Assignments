@@ -195,11 +195,11 @@
 
            READ TRANS-SORTED AT END GO TO COPY-MASTER-RECORDS.
            SET PREV-ACC TO ACC-SORTED.
-           IF OP-SORTED = 'D' THEN 
-           COMPUTE DELTA = AMT-SORTED
-           GO TO PROCESS-MASTER-RECORD
-           END-IF.
-           COMPUTE DELTA = -AMT-SORTED.
+      *     IF OP-SORTED = 'D' THEN 
+      *     COMPUTE DELTA = AMT-SORTED 
+      *     GO TO PROCESS-MASTER-RECORD
+      *     END-IF.
+      *     COMPUTE DELTA = -AMT-SORTED.
            GO TO PROCESS-MASTER-RECORD.
        
        PROCESS-MASTER-RECORD.
@@ -251,11 +251,12 @@
            WRITE UPDATED-MASTER-RECORD.
 
       *    PROCESS THE CURRENT TXN AND MOVE TO NEXT MASTER RECORD
-           IF OP-SORTED = 'D' THEN
-           COMPUTE DELTA = AMT-SORTED
-           GO TO PROCESS-MASTER-RECORD
-           END-IF.
-           COMPUTE DELTA = -AMT-SORTED.
+      *     IF OP-SORTED = 'D' THEN
+      *     COMPUTE DELTA = AMT-SORTED
+      *     GO TO PROCESS-MASTER-RECORD
+      *     END-IF.
+      *     COMPUTE DELTA = -AMT-SORTED.
+           COMPUTE DELTA = 0.
            GO TO PROCESS-MASTER-RECORD.
            
 
