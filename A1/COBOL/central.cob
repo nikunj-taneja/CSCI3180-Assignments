@@ -88,7 +88,7 @@
        01 NEG-REPORT-RECORD.
            05 NAME-LABEL PIC X(6).
            05 NAME-NEG   PIC X(20).
-           05 ACC-LABEL  PIC X(10).
+           05 ACC-LABEL  PIC X(17).
            05 ACC-NEG    PIC 9(16).
            05 BAL-LABEL  PIC X(10).
            05 SIG-NEG    PIC X(1).
@@ -280,7 +280,7 @@
            READ UPDATED-MASTER-FILE AT END GO TO CENTRAL-END.
            IF SIG-UPDATED = '-' THEN
            MOVE "Name: " TO NAME-LABEL
-           MOVE " Account: " TO ACC-LABEL
+           MOVE " Account Number: " TO ACC-LABEL
            MOVE " Balance: " TO BAL-LABEL 
            MOVE '-' TO SIG-NEG                         
            MOVE ACC-NAME-UPDATED TO NAME-NEG
