@@ -1,3 +1,21 @@
+/*
+
+* CSCI3180 Principles of Programming Languages *
+* --- Declaration --- *
+* I declare that the assignment here submitted is original except for source
+* material explicitly acknowledged. I also acknowledge that I am aware of
+* University policy and regulations on honesty in academic work, and of the
+* disciplinary guidelines and procedures applicable to breaches of such policy
+* and regulations, as contained in the website
+* http://www.cuhk.edu.hk/policy/academichonesty/ *
+* Assignment 1
+* Name : Taneja Nikunj
+* Student ID : 1155123371
+* Email Addr : ntaneja9@cse.cuhk.edu.hk
+
+*/
+
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -57,6 +75,7 @@ void print_welcome_msg() {
     printf("##############################################\n");
 }
 
+// Prints the respective error message given the error code
 int handle_err(int err) {
     switch (err)
     {
@@ -180,6 +199,7 @@ int validate_target_acc(char* receiver, char* sender) {
     char *line = (char *) malloc(sizeof(char) * line_size);
     
     if (fp) {
+        // read master.txt line by line and check if receiver has a record 
         while ((getline(&line, &line_size, fp) != -1) && !found) {
             MasterRecord* record = construct_master_record(line);
             if (strcmp(record->acc, receiver) == 0)
@@ -188,6 +208,8 @@ int validate_target_acc(char* receiver, char* sender) {
         }
         free(line);
         fclose(fp);
+        
+        // handle error if receiver not registered
         if (!found)
             return handle_err(TARGET_ACC_DNE);
         return SUCCESS;
@@ -197,6 +219,7 @@ int validate_target_acc(char* receiver, char* sender) {
     }
 }
 
+// Compares the balance to given amount
 int check_balance(long long int amount, char* acc) {
     int ret;
     int found = 0;
@@ -228,6 +251,7 @@ int check_balance(long long int amount, char* acc) {
     }
 }
 
+// Validates user input and calls the error handler if it's not valid
 int validate_input(char* input, int prompt_id) {
     switch (prompt_id)
     {
@@ -251,6 +275,7 @@ int validate_input(char* input, int prompt_id) {
     return SUCCESS;
 }
 
+// Takes amount input from user
 long long int get_amount() {
     double amount;
     printf("=> AMOUNT\n");
@@ -258,6 +283,8 @@ long long int get_amount() {
     return (long long int) (amount*100);
 }
 
+// Validates the amount input and calls the error handler
+// with the corresponsing error code if it's not valid 
 int validate_amount(long long int amount, int service_code, char* acc) {
     switch (service_code)
     {
@@ -278,6 +305,7 @@ int validate_amount(long long int amount, int service_code, char* acc) {
     return SUCCESS;
 }
 
+// Prompts user for the corresponding input, given the prompt code
 char* prompt_user(int prompt_id) {
     char* input = (char *) malloc(sizeof(char) * MAX_INPUT_SIZE);
     
@@ -318,6 +346,8 @@ char* prompt_user(int prompt_id) {
     return input;
 }
 
+// Returns the respective service code 
+// given the string representation
 int get_service_code(char* service) {
     if (strcmp(service, "D") == 0)
         return DEPOSIT;
@@ -326,6 +356,7 @@ int get_service_code(char* service) {
     return WITHDRAWAL;
 }
 
+// Main service handler that implements the logic for various services
 int handle_service(int service, char* atm, char* acc, int timestamp) {
     long long int amount;
     char *trans_filepath, *amount_str, *timestamp_str;

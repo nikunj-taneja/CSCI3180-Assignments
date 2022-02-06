@@ -1,3 +1,16 @@
+      * CSCI3180 Principles of Programming Languages *
+      * --- Declaration --- *
+      * I declare that the assignment here submitted is original except 
+      * for source material explicitly acknowledged. I also acknowledge 
+      * that I am aware of University policy and regulations on honesty 
+      * in academic work, and of the disciplinary guidelines and procedures 
+      * applicable to breaches of such policy and regulations, as contained in 
+      * the website http://www.cuhk.edu.hk/policy/academichonesty/ *
+      * Assignment 1
+      * Name : Taneja Nikunj
+      * Student ID : 1155123371
+      * Email Addr : ntaneja9@cse.cuhk.edu.hk
+       
        IDENTIFICATION DIVISION.
        PROGRAM-ID.   CENTRAL.
        AUTHOR.       NIKUNJ TANEJA.
@@ -86,19 +99,19 @@
 
        FD NEG-REPORT.
        01 NEG-REPORT-RECORD.
-           05 NAME-LABEL PIC X(6) VALUE "Name: ".
+           05 NAME-LABEL PIC X(6).
            05 NAME-NEG   PIC X(20).
-           05 ACC-LABEL  PIC X(17) VALUE " Account Number: ".
+           05 ACC-LABEL  PIC X(17).
            05 ACC-NEG    PIC 9(16).
-           05 BAL-LABEL  PIC X(10) VALUE " Balance: ".
-           05 SIG-NEG    PIC X(1) VALUE "-".
+           05 BAL-LABEL  PIC X(10).
+           05 SIG-NEG    PIC X(1).
            05 BAL-NEG    PIC 9(15).
 
 
        WORKING-STORAGE SECTION.
        01 PREV-ACC PIC 9(16).
        01 DELTA PIC S9(20) VALUES 0.
-       01 NEW-BAL PIC 9(20).
+       01 NEW-BAL PIC S9(20) VALUES 0.
        
 
        PROCEDURE DIVISION.
@@ -293,6 +306,9 @@
            READ UPDATED-MASTER-FILE AT END GO TO CENTRAL-END.
            IF SIG-UPDATED = '-' THEN
            MOVE "Name: " TO NAME-LABEL
+           MOVE " Account Number: " TO ACC-LABEL
+           MOVE " Balance: " TO BAL-LABEL 
+           MOVE '-' TO SIG-NEG                         
            MOVE ACC-NAME-UPDATED TO NAME-NEG
            MOVE " Account Number: " TO ACC-LABEL
            SET ACC-NEG TO ACC-UPDATED
