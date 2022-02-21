@@ -1,0 +1,16 @@
+9 10 30 5 3 2 1 
+P P P S S S P M P P
+P M P P S S P M P P
+P P P M P P P P P P
+P P M M S P P P P P
+P P S P S M M M P P
+P P S P S P P M P P
+P S P P S P P M P S
+S P P M S P P P S P
+P P P M S P P P P P
+0 1 L R R L 
+2 2 L R U R L D
+3 4 U U U D D D
+7 2 
+5 8 
+4 7 5 
