@@ -10,25 +10,46 @@ class Cell:
         self._hours = 0
     
     # TODO: hours getter and setter
+    @property
+    def hours(self):
+        return self._hours
+    
+    @hours.setter
+    def hours(self, hours):
+        self._hours = hours
 
     # TODO: occupant getter
+    @property
+    def occupant(self):
+        return self._occupant
 
 
     def set_occupant(self, obj):
         # TODO: set occupant for the Plain cell 
         #       return whether success or not
-
+        if self.occupant is None:
+            self._occupant = obj
+            return True
+        else:
+            if self.occupant.interact_with(obj):
+                self._occupant = obj
+                return True
+            else:
+                return False
         # END TODO
 
     def remove_occupant(self):
-        # TODO: remove the occupant 
-
+        # TODO: remove the occupant
+        self._occupant = None
         # END TODO
 
     def display(self):
         # TODO: print a string to display the cell 
         #       and the occupant in the cell 
-
+        if self.occupant is not None:
+            print(f'{self._color} {self.occupant.display()}{self._color} \033[0m   ', end='')
+        else:
+            print(f'{self._color}   \033[0m   ', end='')
         # END TODO
 
 class Plain(Cell):
@@ -44,7 +65,7 @@ class Mountain(Cell):
 
     def set_occupant(self, obj):
         # TODO: return False
-
+        return False
         # END TODO
     
 class Swamp(Cell):
