@@ -1,6 +1,27 @@
+'''
+/*
+* CSCI3180 Principles of Programming Languages
+*
+* --- Declaration ---
+*
+* I declare that the assignment here submitted is original except for source
+* material explicitly acknowledged. I also acknowledge that I am aware of
+* University policy and regulations on honesty in academic work, and of the
+* disciplinary guidelines and procedures applicable to breaches of such policy
+* and regulations, as contained in the website
+* http://www.cuhk.edu.hk/policy/academichonesty/
+*
+* Assignment 2
+* Name : Taneja Nikunj
+* Student ID : 1155123371
+* Email Addr : ntaneja9@cse.cuhk.edu.hk
+*/
+'''
+
+from abc import ABCMeta
 from abc import abstractmethod
 
-class GameCharacter:
+class GameCharacter(metaclass=ABCMeta):
     def __init__(self, row, col):
         self._row = row
         self._col = col
@@ -8,7 +29,7 @@ class GameCharacter:
         self._name = None
         self._active = True
         self._character = None 
-        self._color = "\033[1;31m"
+        self._color = '\033[1;31m'
     
     #TODO: name getter
     @property
@@ -33,7 +54,7 @@ class GameCharacter:
     @active.setter
     def active(self, active):
         self._active = active
-
+    
     #TODO: occupying getter and setter
     @property
     def occupying(self):
@@ -45,16 +66,16 @@ class GameCharacter:
 
     def cmd_to_pos(self, char):
         next_pos = [self._row, self._col]
-        if char == "L":
+        if char == 'L':
             next_pos[1] -= 1
-        elif char == "R":
+        elif char == 'R':
             next_pos[1] += 1
-        elif char == "U":
+        elif char == 'U':
             next_pos[0] -= 1
-        elif char == "D":
+        elif char == 'D':
             next_pos[0] += 1
         else:
-            print("Invalid Move.")
+            print('Invalid Move.')
         return next_pos
 
     @abstractmethod
@@ -65,7 +86,6 @@ class GameCharacter:
     def interact_with(self, comer):
         pass
     
-    @abstractmethod
     def display(self):
         # TODO: return _color followed by _character for displaying 
         return f'{self._color}{self._character}'
@@ -73,13 +93,13 @@ class GameCharacter:
 
 
 class Player(GameCharacter):
-    def __init__(self, row, col, hp=10, oxygen=10):
+    def __init__(self, row, col, h, o):
         GameCharacter.__init__(self, row, col)
-        self._valid_actions = ["U", "D", "R", "L"]
-        self._hp = hp
-        self._oxygen = oxygen
-        self._name = "Player"
-        self._character = "A"
+        self._valid_actions = ['U', 'D', 'R', 'L']
+        self._hp = h
+        self._oxygen = o
+        self._name = 'Player'
+        self._character = 'A'
 
     #TODO: hp getter and setter
     @property
@@ -98,14 +118,15 @@ class Player(GameCharacter):
     @oxygen.setter
     def oxygen(self, o):
         self._oxygen = o
+    
 
     def act(self, map):
         next_cell = None
         next_pos = [0, 0]
         while next_cell == None:
-            action = input("Next move (U, D, R, L): ".format(self._row, self._col))
+            action = input('Next move (U, D, R, L): ')
             # TODO: act method
-            while action[0] not in self._valid_actions or len(action) > 1:
+            while len(action) != 1 or action[0] not in self._valid_actions:
                 print(f"Invalid command {action}. Please enter one of {{U, D, R, L}}.")
                 action = input("Next move (U, D, R, L): ")
             
@@ -114,23 +135,23 @@ class Player(GameCharacter):
             if next_cell and next_cell.set_occupant(self):
                 self._row = next_pos[0]
                 self._col = next_pos[1]
-                self.oxygen -= self.occupying.hours
-                self.occupying.remove_occupant()
-                self.occupying = next_cell
+                self._oxygen -= self.occupying.hours
+                self._occupying.remove_occupant()
+                self._occupying = next_cell
             else:
                 next_cell = None
-            if not self.active:
-                self.occupying.remove_occupant()
-            # END TODO 
+            if not self._active:
+                self._occupying.remove_occupant()
+                self._occupying = None
+            # END TODO
 
     # return whether comer entering the cell successfully or not
     def interact_with(self, comer):
-        if comer and comer.name == "Goblin":
+        if comer.name == 'Goblin':
             print('\033[1;31;46mPlayer meets a Goblin! Player\'s HP - %d.\033[0m' %(comer.damage))
-            # TODO: interact_with method 
-            self.hp -= comer.damage
+             # TODO: interact_with method 
+            self._hp -= comer.damage
             comer.active = False
-            return False
         return False
             # END TODO 
 
@@ -141,8 +162,8 @@ class Goblin(GameCharacter):
         self._actions = actions
         self._cur_act = 0
         self._damage = 1
-        self._name = "Goblin"
-        self._character = "G"
+        self._name = 'Goblin'
+        self._character = 'G'
 
     #TODO: damage getter
     @property
@@ -150,7 +171,7 @@ class Goblin(GameCharacter):
         return self._damage
 
     def act(self, map):
-        # TODO: act method of a Goblin 
+       # TODO: act method of a Goblin 
         # get the next cell according to _actions and _cur_act
         next_move = self._actions[self._cur_act % len(self._actions)]
         next_pos = self.cmd_to_pos(next_move)
@@ -159,26 +180,25 @@ class Goblin(GameCharacter):
         if next_cell and next_cell.set_occupant(self): 
             self._row = next_pos[0]
             self._col = next_pos[1]
-            self.occupying.remove_occupant()
-            self.occupying = next_cell
+            self._occupying.remove_occupant()
+            self._occupying = next_cell
             print("\033[1;31;46mGoblin enters the cell (%d, %d).\033[0;0m" % (self._row, self._col))
-        if not self.active:
+        if not self._active:
             print("\033[1;31;46mGoblin dies right after the movement.\033[0;0m")
-            self.occupying.remove_occupant()
+            self._occupying.remove_occupant()
+            self._occupying = None
         # END TODO 
-
 
     # return whether comer entering the cell successfully or not
     def interact_with(self, comer):
-        if comer and comer.name == "Player":
+        if comer.name == 'Player':
             print(
-                "\033[1;31;46mA goblin at cell (%d, %d) meets Player. The goblin died. Player's HP - 1.\033[0;0m"
-                % (self._row, self._col)
+                '\033[1;31;46mA goblin at cell (%d, %d) meets Player. The goblin died. Player\'s HP - %d.\033[0;0m'
+                % (self._row, self._col, self._damage)
             )
             # TODO: update properties of the player and the Goblin 
+            #       return whether the Player successfully enter the cell 
             comer.hp -= self.damage
-            self.active = False
-            # return whether the Player successfully enter the cell 
-            return True
+            self._active = False
         return True
             # END TODO

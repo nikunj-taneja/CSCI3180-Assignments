@@ -1,4 +1,23 @@
-from posixpath import split
+'''
+/*
+* CSCI3180 Principles of Programming Languages
+*
+* --- Declaration ---
+*
+* I declare that the assignment here submitted is original except for source
+* material explicitly acknowledged. I also acknowledge that I am aware of
+* University policy and regulations on honesty in academic work, and of the
+* disciplinary guidelines and procedures applicable to breaches of such policy
+* and regulations, as contained in the website
+* http://www.cuhk.edu.hk/policy/academichonesty/
+*
+* Assignment 2
+* Name : Taneja Nikunj
+* Student ID : 1155123371
+* Email Addr : ntaneja9@cse.cuhk.edu.hk
+*/
+'''
+
 from Map import Map
 from Cell import Plain, Mountain, Swamp
 from GameCharacter import Player, Goblin
@@ -6,17 +25,16 @@ from GameCharacter import Player, Goblin
 class Engine:
     def __init__(self, data_file):
         self._actors = []
-        self._remove = [] 
         self._map = None 
         self._player = None 
-        with open(data_file, "r") as fp:
+        with open(data_file, 'r') as fp:
             line = fp.readline()
             if not line:
                 return None 
             else:
                 items = line.split()
                 if len(items) != 5:
-                    print("INVALID DATA FILE.")
+                    print('INVALID DATA FILE.')
                     return None 
                 num_of_row = int(items[0])
                 num_of_col = int(items[1])
@@ -39,7 +57,7 @@ class Engine:
                     elif split_arr[j] == "S":
                         self._map.build_cell(i, j, Swamp(i, j))
             # END TODO
-
+           
             self._player = Player(num_of_row - 1, 0, p_hp, p_ox)
             
             # TODO: initilize the position of the player 
@@ -66,7 +84,7 @@ class Engine:
                 init_cell = self._map.get_cell(goblin_row, goblin_col)
                 init_cell.set_occupant(gob)
                 gob.occupying = init_cell
-                # END TODO
+                # END TOD
 
     def run(self):
         # main rountine of the game
@@ -80,10 +98,10 @@ class Engine:
         self.print_result()
 
     def clean_up(self):
-        # TODO: remove all objects in _actors which is not active 
-        for actor in self._actors:
-            if not actor.active:
-                self._actors.remove(actor)
+        # TODO: remove all objects in _actors which is not active
+        for i in reversed(range(len(self._actors))):
+            if not self._actors[i].active:
+                self._actors.remove(self._actors[i])
         # END TODO
 
     # check if the game ends and return if the player win or not.
@@ -103,7 +121,6 @@ class Engine:
         # TODO: display the remaining oxygen and HP 
         print(f'Oxygen: {self._player.oxygen}, HP: {self._player.hp}')
         # END TODO 
-    
     def print_result(self):
         # TODO: print a string that shows the result of the game. 
         if self.state() == 1:

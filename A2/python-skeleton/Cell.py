@@ -1,3 +1,23 @@
+'''
+/*
+* CSCI3180 Principles of Programming Languages
+*
+* --- Declaration ---
+*
+* I declare that the assignment here submitted is original except for source
+* material explicitly acknowledged. I also acknowledge that I am aware of
+* University policy and regulations on honesty in academic work, and of the
+* disciplinary guidelines and procedures applicable to breaches of such policy
+* and regulations, as contained in the website
+* http://www.cuhk.edu.hk/policy/academichonesty/
+*
+* Assignment 2
+* Name : Taneja Nikunj
+* Student ID : 1155123371
+* Email Addr : ntaneja9@cse.cuhk.edu.hk
+*/
+'''
+
 from abc import abstractmethod
 
 
@@ -27,11 +47,11 @@ class Cell:
     def set_occupant(self, obj):
         # TODO: set occupant for the Plain cell 
         #       return whether success or not
-        if self.occupant is None:
+        if self._occupant is None:
             self._occupant = obj
             return True
         else:
-            if self.occupant.interact_with(obj):
+            if self._occupant.interact_with(obj):
                 self._occupant = obj
                 return True
             else:
@@ -39,15 +59,15 @@ class Cell:
         # END TODO
 
     def remove_occupant(self):
-        # TODO: remove the occupant
+        # TODO: remove the occupant 
         self._occupant = None
         # END TODO
 
     def display(self):
         # TODO: print a string to display the cell 
         #       and the occupant in the cell 
-        if self.occupant is not None:
-            print(f'{self._color} {self.occupant.display()}{self._color} \033[0m   ', end='')
+        if self._occupant is not None:
+            print(f'{self._color} {self._occupant.display()}{self._color} \033[0m   ', end='')
         else:
             print(f'{self._color}   \033[0m   ', end='')
         # END TODO
