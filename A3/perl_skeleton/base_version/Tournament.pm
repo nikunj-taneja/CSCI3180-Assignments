@@ -7,8 +7,6 @@ package Tournament;
 use base_version::Team;
 use base_version::Fighter;
 
-use List::Util qw(uniq);
-
 sub new {
     my $class = shift;
 
@@ -191,8 +189,14 @@ sub play_game {
                     $flag_valid = 0;
                 }
             }
+            
+            my $num_unique = 0;
+            my %seen = ();
+            foreach my $i (@order1) {
+                $num_unique++ unless $seen{$i}++;
+            }
 
-            if (scalar @order1 != scalar @{uniq(@order1)}) {
+            if (scalar @order1 != $num_unique) {
                 $flag_valid = 0;
             }
 
