@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use lib "/Users/nikunj/Desktop/CSCI3180/CSCI3180-Assignments/A3/perl_skeleton/";
+use lib "./";
 
 package Tournament;
 use base_version::Team;
