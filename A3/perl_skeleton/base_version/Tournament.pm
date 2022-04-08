@@ -186,7 +186,7 @@ sub play_game {
             for my $order (@order1) {
                 if (($order < 1) | ($order > 4)) {
                     $flag_valid = 0;
-                } elsif (${${$self->{"team1"}->fighter_list}[$order - 1]}->check_defeated()) {
+                } elsif ($$$self->{"team1"}->{"fighter_list"}[$order - 1]->check_defeated()) {
                     $flag_valid = 0;
                 }
             }
