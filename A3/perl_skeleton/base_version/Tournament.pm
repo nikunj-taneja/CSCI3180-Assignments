@@ -142,7 +142,8 @@ sub input_fighters {
         while (1) {
             my $properties_stdin = <STDIN>;
             chomp $properties_stdin;
-            my @properties = map(int, @{split(' ', $properties_stdin)});
+            my @properties_str = split(' ', $properties_stdin);
+            my @properties = map(int, @properties_str);
             my ( $HP, $attack, $defence, $speed ) = @properties;
             if ($HP + 10 * ($attack + $defence + $speed) <= 500) {
                 my $fighter = new Fighter( $fighter_idx, $HP, $attack, $defence, $speed );
