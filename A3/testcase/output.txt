@@ -1,0 +1,130 @@
+Please input properties for fighters in Team 1
+Properties violate the constraint
+Please input properties for fighters in Team 2
+Properties violate the constraint
+===========
+Game Begins
+===========
+
+Team 1: please input order
+Invalid input order
+Invalid input order
+Team 2: please input order
+Round 1:
+Duel 1: Fighter 1 VS Fighter 5, tie
+Fighter 1: HP: 90 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 5: HP: 90 attack: 20 defense: 10 speed: 10 undefeated
+Duel 2: Fighter 2 VS Fighter 6, Fighter 2 wins
+Fighter 2: HP: 99 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 6: HP: 90 attack: 10 defense: 10 speed: 10 undefeated
+Duel 3: Fighter 3 VS Fighter 7, tie
+Fighter 3: HP: 90 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 7: HP: 90 attack: 20 defense: 10 speed: 10 undefeated
+Duel 4: Fighter 4 VS Fighter 8, tie
+Fighter 4: HP: 90 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 8: HP: 90 attack: 20 defense: 10 speed: 10 undefeated
+Fighters at rest:
+Team 1: please input order
+Team 2: please input order
+Round 2:
+Duel 1: Fighter 1 VS Fighter 5, tie
+Fighter 1: HP: 80 attack: 19 defense: 9 speed: 9 undefeated
+Fighter 5: HP: 80 attack: 19 defense: 9 speed: 9 undefeated
+Duel 2: Fighter 2 VS Fighter 6, Fighter 2 wins
+Fighter 2: HP: 98 attack: 19 defense: 9 speed: 9 undefeated
+Fighter 6: HP: 80 attack: 9 defense: 9 speed: 9 undefeated
+Duel 3: Fighter 3 VS Fighter 7, tie
+Fighter 3: HP: 80 attack: 19 defense: 9 speed: 9 undefeated
+Fighter 7: HP: 80 attack: 19 defense: 9 speed: 9 undefeated
+Duel 4: Fighter 4 VS Fighter 8, tie
+Fighter 4: HP: 80 attack: 19 defense: 9 speed: 9 undefeated
+Fighter 8: HP: 80 attack: 19 defense: 9 speed: 9 undefeated
+Fighters at rest:
+Team 1: please input order
+Team 2: please input order
+Round 3:
+Duel 1: Fighter 1 VS Fighter 5, tie
+Fighter 1: HP: 70 attack: 18 defense: 8 speed: 8 undefeated
+Fighter 5: HP: 70 attack: 18 defense: 8 speed: 8 undefeated
+Duel 2: Fighter 2 VS Fighter 6, Fighter 2 wins
+Fighter 2: HP: 97 attack: 18 defense: 8 speed: 8 undefeated
+Fighter 6: HP: 70 attack: 8 defense: 8 speed: 8 undefeated
+Duel 3: Fighter 3 VS Fighter 7, tie
+Fighter 3: HP: 70 attack: 18 defense: 8 speed: 8 undefeated
+Fighter 7: HP: 70 attack: 18 defense: 8 speed: 8 undefeated
+Duel 4: Fighter 4 VS Fighter 8, tie
+Fighter 4: HP: 70 attack: 18 defense: 8 speed: 8 undefeated
+Fighter 8: HP: 70 attack: 18 defense: 8 speed: 8 undefeated
+Fighters at rest:
+Team 1: please input order
+Team 2: please input order
+Round 4:
+Do you want to upgrade properties for Fighter 1? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 5? A for attack. D for defense. S for speed. N for no.
+Duel 1: Fighter 1 VS Fighter 5, tie
+Fighter 1: HP: 60 attack: 18 defense: 7 speed: 7 undefeated
+Fighter 5: HP: 60 attack: 17 defense: 8 speed: 7 undefeated
+Do you want to upgrade properties for Fighter 2? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 6? A for attack. D for defense. S for speed. N for no.
+Duel 2: Fighter 2 VS Fighter 6, Fighter 2 wins
+Fighter 2: HP: 96 attack: 19 defense: 6 speed: 10 undefeated
+Fighter 6: HP: 61 attack: 6 defense: 10 speed: 10 undefeated
+Do you want to upgrade properties for Fighter 3? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 7? A for attack. D for defense. S for speed. N for no.
+Duel 3: Fighter 3 VS Fighter 7, tie
+Fighter 3: HP: 60 attack: 17 defense: 7 speed: 7 undefeated
+Fighter 7: HP: 60 attack: 17 defense: 7 speed: 7 undefeated
+Do you want to upgrade properties for Fighter 4? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 8? A for attack. D for defense. S for speed. N for no.
+Duel 4: Fighter 4 VS Fighter 8, tie
+Fighter 4: HP: 60 attack: 17 defense: 7 speed: 7 undefeated
+Fighter 8: HP: 60 attack: 17 defense: 7 speed: 7 undefeated
+Fighters at rest:
+Team 1: please input order
+Team 2: please input order
+Round 5:
+Duel 1: Fighter 1 VS Fighter 5, tie
+Fighter 1: HP: 50 attack: 17 defense: 6 speed: 6 undefeated
+Fighter 5: HP: 50 attack: 16 defense: 7 speed: 6 undefeated
+Do you want to upgrade properties for Fighter 6? A for attack. D for defense. S for speed. N for no.
+Duel 2: Fighter 2 VS Fighter 6, Fighter 2 wins
+Fighter 2: HP: 95 attack: 18 defense: 5 speed: 9 undefeated
+Fighter 6: HP: 52 attack: 6 defense: 9 speed: 9 undefeated
+Do you want to upgrade properties for Fighter 3? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 7? A for attack. D for defense. S for speed. N for no.
+Duel 3: Fighter 3 VS Fighter 7, Fighter 3 wins
+Fighter 3: HP: 51 attack: 16 defense: 7 speed: 6 undefeated
+Fighter 7: HP: 50 attack: 16 defense: 6 speed: 7 undefeated
+Do you want to upgrade properties for Fighter 4? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 8? A for attack. D for defense. S for speed. N for no.
+Duel 4: Fighter 4 VS Fighter 8, tie
+Fighter 4: HP: 50 attack: 16 defense: 6 speed: 6 undefeated
+Fighter 8: HP: 50 attack: 16 defense: 6 speed: 6 undefeated
+Fighters at rest:
+Team 1: please input order
+Team 2: please input order
+Round 6:
+Do you want to upgrade properties for Fighter 1? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 5? A for attack. D for defense. S for speed. N for no.
+Duel 1: Fighter 1 VS Fighter 5, tie
+Fighter 1: HP: 39 attack: 17 defense: 5 speed: 5 undefeated
+Fighter 5: HP: 39 attack: 16 defense: 6 speed: 5 undefeated
+Do you want to upgrade properties for Fighter 2? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 6? A for attack. D for defense. S for speed. N for no.
+Duel 2: Fighter 2 VS Fighter 6, Fighter 2 wins
+Fighter 2: HP: 93 attack: 18 defense: 4 speed: 8 undefeated
+Fighter 6: HP: 42 attack: 6 defense: 8 speed: 8 undefeated
+Do you want to upgrade properties for Fighter 3? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 7? A for attack. D for defense. S for speed. N for no.
+Duel 3: Fighter 3 VS Fighter 7, Fighter 3 wins
+Fighter 3: HP: 41 attack: 16 defense: 6 speed: 5 undefeated
+Fighter 7: HP: 39 attack: 16 defense: 5 speed: 6 undefeated
+Do you want to upgrade properties for Fighter 4? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 4? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 8? A for attack. D for defense. S for speed. N for no.
+Do you want to upgrade properties for Fighter 8? A for attack. D for defense. S for speed. N for no.
+Duel 4: Fighter 4 VS Fighter 8, tie
+Fighter 4: HP: 38 attack: 17 defense: 5 speed: 5 undefeated
+Fighter 8: HP: 38 attack: 17 defense: 5 speed: 5 undefeated
+Fighters at rest:
+Team 1: please input order
