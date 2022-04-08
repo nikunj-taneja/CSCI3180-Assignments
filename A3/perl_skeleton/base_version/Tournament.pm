@@ -152,8 +152,8 @@ sub input_fighters {
             }
             print("Properties violate the constraint\n");
         }
-        return $fighter_list_team;
     }
+    return $fighter_list_team;
 }
 
 sub play_game {
