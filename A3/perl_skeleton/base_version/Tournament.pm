@@ -30,15 +30,15 @@ sub play_one_round {
     my $fight_cnt = 1;
     print "Round $self->{'round_cnt'}:\n";
 
-    my $team1_fighter;
-    my $team2_fighter;
-    my $team_fighter;
+    my $team1_fighter = undef;
+    my $team2_fighter = undef;
+    my $team_fighter = undef;
 
     while (1) {
         $team1_fighter = $self->{"team1"}->get_next_fighter();
         $team2_fighter = $self->{"team2"}->get_next_fighter();
 
-        last if (!($team1_fighter & $team2_fighter));
+        last if (!(defined($team1_fighter) & defined($team2_fighter)));
         
         my $fighter_first = $team1_fighter;
         my $fighter_second = $team2_fighter;
@@ -92,7 +92,7 @@ sub play_one_round {
             $team_fighter = $team2_fighter
         }
         while (1) {
-            if ($team_fighter) {
+            if (defined($team_fighter)) {
                 $team_fighter->print_info();
             } else {
                 last;
