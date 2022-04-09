@@ -38,7 +38,9 @@ sub play_one_round {
         $team1_fighter = $self->{"team1"}->get_next_fighter();
         $team2_fighter = $self->{"team2"}->get_next_fighter();
 
-        last if (!(defined($team1_fighter) & defined($team2_fighter)));
+        if (!defined($team1_fighter) | !defined($team2_fighter)) {
+            last;
+        }
         
         my $fighter_first = $team1_fighter;
         my $fighter_second = $team2_fighter;
@@ -270,7 +272,6 @@ sub play_game {
             }
         }
 
-        
         $self->{"team1"}->set_order(\@order1);
         $self->{"team2"}->set_order(\@order2);
 

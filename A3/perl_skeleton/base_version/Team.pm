@@ -12,7 +12,7 @@ sub new {
         "NO" => shift,
         "fighter_list" => undef,
         "order" => undef,
-        "fight_cnt" => shift
+        "fight_cnt" => 0
     };
     return bless $self, $class;
 };
@@ -29,8 +29,9 @@ sub get_fighter_list {
 
 sub set_order {
     my ( $self, $order ) = @_;
+    $self->{"order"} = [];
     for my $a_order (@$order) {
-        push(@{$self->{"order"}}, $a_order);
+        push(@{$self->{"order"}}, int($a_order));
     }
     $self->{"fight_cnt"} = 0;
 }
