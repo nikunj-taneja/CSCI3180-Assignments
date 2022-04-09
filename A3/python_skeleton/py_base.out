@@ -1,0 +1,139 @@
+Please input properties for fighters in Team 1
+Please input properties for fighters in Team 2
+===========
+Game Begins
+===========
+
+Team 1: please input order
+Team 2: please input order
+Round 1:
+Duel 1: Fighter 1 VS Fighter 5, Fighter 5 wins
+Fighter 1: HP: 20 attack: 20 defense: 10 speed: 15 undefeated
+Fighter 5: HP: 49 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 2 VS Fighter 6, Fighter 6 wins
+Fighter 2: HP: 20 attack: 20 defense: 10 speed: 15 undefeated
+Fighter 6: HP: 49 attack: 20 defense: 20 speed: 5 undefeated
+Duel 3: Fighter 3 VS Fighter 7, Fighter 7 wins
+Fighter 3: HP: 90 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 7: HP: 49 attack: 20 defense: 20 speed: 5 undefeated
+Duel 4: Fighter 4 VS Fighter 8, Fighter 8 wins
+Fighter 4: HP: 90 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 8: HP: 49 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Team 1: please input order
+Team 2: please input order
+Round 2:
+Duel 1: Fighter 1 VS Fighter 5, Fighter 5 wins
+Fighter 1: HP: 10 attack: 20 defense: 10 speed: 15 undefeated
+Fighter 5: HP: 48 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 2 VS Fighter 6, Fighter 6 wins
+Fighter 2: HP: 10 attack: 20 defense: 10 speed: 15 undefeated
+Fighter 6: HP: 48 attack: 20 defense: 20 speed: 5 undefeated
+Duel 3: Fighter 3 VS Fighter 7, Fighter 7 wins
+Fighter 3: HP: 80 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 7: HP: 48 attack: 20 defense: 20 speed: 5 undefeated
+Duel 4: Fighter 4 VS Fighter 8, Fighter 8 wins
+Fighter 4: HP: 80 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 8: HP: 48 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Team 1: please input order
+Team 2: please input order
+Round 3:
+Duel 1: Fighter 1 VS Fighter 5, Fighter 5 wins
+Fighter 1: HP: 0 attack: 20 defense: 10 speed: 15 defeated
+Fighter 5: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 2 VS Fighter 6, Fighter 6 wins
+Fighter 2: HP: 0 attack: 20 defense: 10 speed: 15 defeated
+Fighter 6: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Duel 3: Fighter 3 VS Fighter 7, Fighter 7 wins
+Fighter 3: HP: 70 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 7: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Duel 4: Fighter 4 VS Fighter 8, Fighter 8 wins
+Fighter 4: HP: 70 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 8: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Team 1: please input order
+Team 2: please input order
+Round 4:
+Duel 1: Fighter 3 VS Fighter 5, Fighter 5 wins
+Fighter 3: HP: 60 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 5: HP: 46 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 4 VS Fighter 6, Fighter 6 wins
+Fighter 4: HP: 60 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 6: HP: 46 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Fighter 7: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Fighter 8: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Team 1: please input order
+Team 2: please input order
+Round 5:
+Duel 1: Fighter 3 VS Fighter 5, Fighter 5 wins
+Fighter 3: HP: 50 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 5: HP: 45 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 4 VS Fighter 6, Fighter 6 wins
+Fighter 4: HP: 50 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 6: HP: 45 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Fighter 7: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Fighter 8: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Team 1: please input order
+Team 2: please input order
+Round 6:
+Duel 1: Fighter 3 VS Fighter 5, Fighter 5 wins
+Fighter 3: HP: 40 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 5: HP: 44 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 4 VS Fighter 6, Fighter 6 wins
+Fighter 4: HP: 40 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 6: HP: 44 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Fighter 7: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Fighter 8: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Team 1: please input order
+Team 2: please input order
+Round 7:
+Duel 1: Fighter 3 VS Fighter 5, Fighter 5 wins
+Fighter 3: HP: 30 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 5: HP: 43 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 4 VS Fighter 6, Fighter 6 wins
+Fighter 4: HP: 30 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 6: HP: 43 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Fighter 7: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Fighter 8: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Team 1: please input order
+Team 2: please input order
+Round 8:
+Duel 1: Fighter 3 VS Fighter 5, Fighter 5 wins
+Fighter 3: HP: 20 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 5: HP: 42 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 4 VS Fighter 6, Fighter 6 wins
+Fighter 4: HP: 20 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 6: HP: 42 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Fighter 7: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Fighter 8: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Team 1: please input order
+Team 2: please input order
+Round 9:
+Duel 1: Fighter 3 VS Fighter 5, Fighter 5 wins
+Fighter 3: HP: 10 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 5: HP: 41 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 4 VS Fighter 6, Fighter 6 wins
+Fighter 4: HP: 10 attack: 20 defense: 10 speed: 10 undefeated
+Fighter 6: HP: 41 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Fighter 7: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Fighter 8: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Team 1: please input order
+Team 2: please input order
+Round 10:
+Duel 1: Fighter 3 VS Fighter 5, Fighter 5 wins
+Fighter 3: HP: 0 attack: 20 defense: 10 speed: 10 defeated
+Fighter 5: HP: 40 attack: 20 defense: 20 speed: 5 undefeated
+Duel 2: Fighter 4 VS Fighter 6, Fighter 6 wins
+Fighter 4: HP: 0 attack: 20 defense: 10 speed: 10 defeated
+Fighter 6: HP: 40 attack: 20 defense: 20 speed: 5 undefeated
+Fighters at rest:
+Fighter 7: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Fighter 8: HP: 47 attack: 20 defense: 20 speed: 5 undefeated
+Team 2 wins
