@@ -25,7 +25,7 @@ sub get_properties {
     "attack" => $self->{"attack"},
     "defense" => $self->{"defense"},
     "speed" => $self->{"speed"},
-    "defeated" => $self->{"defeated"}
+    "defeated" => 0
   };
 }
 
@@ -48,7 +48,7 @@ sub print_info {
   my $self = shift;
 
   my $defeated_info;
-  if ($self -> check_defeated() == 1) {
+  if ($self->check_defeated()) {
     $defeated_info = "defeated";
   } else {
     $defeated_info = "undefeated";

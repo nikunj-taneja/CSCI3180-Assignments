@@ -37,18 +37,21 @@ sub set_order {
 
 sub get_next_fighter {
     my ( $self ) = @_;
+
     if ($self->{"fight_cnt"} >= scalar @{$self->{"order"}}) {
         return undef;
     }
-    my $prev_fighter_idx = $$self->{"order"}[$self->{"fight_cnt"}];
+
+    my $prev_fighter_idx = ${$self->{"order"}}[$self->{"fight_cnt"}];
     my $fighter = undef;
-    for my $cur_fighter (@$self->{"fighter_list"}) {
+    for my $cur_fighter (@{$self->{"fighter_list"}}) {
         if (${$cur_fighter->get_properties()}{"NO"} == $prev_fighter_idx) {
-            $fighter = $$cur_fighter;
+            $fighter = $cur_fighter;
             last;
         }
     }
-    $self->{"fighter_cnt"} += 1;
+
+    $self->{"fight_cnt"} += 1;
     return $fighter;
 }
 

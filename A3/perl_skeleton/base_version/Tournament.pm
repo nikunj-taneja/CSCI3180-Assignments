@@ -30,45 +30,51 @@ sub play_one_round {
     my $fight_cnt = 1;
     print "Round $self->{'round_cnt'}:\n";
 
-    my $team1_fighter = undef;
-    my $team2_fighter = undef;
-    my $team_fighter = undef;
+    my $team1_fighter;
+    my $team2_fighter;
+    my $team_fighter;
 
     while (1) {
         $team1_fighter = $self->{"team1"}->get_next_fighter();
         $team2_fighter = $self->{"team2"}->get_next_fighter();
 
         last if (!($team1_fighter & $team2_fighter));
-
+        
         my $fighter_first = $team1_fighter;
         my $fighter_second = $team2_fighter;
 
-        if (${$team1_fighter->get_properties()}{"speed"} < ${$team2_fighter.get_properties()}{"speed"}) {
-            $fighter_first = $team1_fighter;
-            $fighter_second = $team2_fighter;
+        if (${$team1_fighter->get_properties()}{"speed"} < ${$team2_fighter->get_properties()}{"speed"}) {
+            $fighter_first = $team2_fighter;
+            $fighter_second = $team1_fighter;
         } 
 
-        my $properties_first = ${$fighter_first->get_properties()};
-        my $properties_second = ${$fighter_second->get_properties()};
+        my $properties_first = $fighter_first->get_properties();
+        my $properties_second = $fighter_second->get_properties();
 
-        my $damage_first = max($properties_first->{"attack"} - $properties_second->{"attack"}, 1);
+        my $damage_first = $properties_first->{"attack"} - $properties_second->{"defense"};
+        if ($damage_first < 1) {
+            $damage_first = 1;
+        }
         my $damage_second = undef;
 
         $fighter_second->reduce_HP($damage_first);
         
         if (!$fighter_second->check_defeated()) {
-            $damage_second = max($properties_second->{"attack"} - $properties_first->{"attack"}, 1);
+            $damage_second = $properties_second->{"attack"} - $properties_first->{"defense"};
+            if ($damage_second < 1) {
+                $damage_second = 1;
+            }
             $fighter_first->reduce_HP($damage_second);
         }
 
         my $winner_info = "tie";
         if (!$damage_second) {
-            $winner_info = "Fighter ${$fighter_first->get_properties()}{'NO'} wins"
+            $winner_info = "Fighter ${$fighter_first->get_properties()}{'NO'} wins";
         } else {
             if ($damage_first > $damage_second) {
-                $winner_info = "Fighter ${$fighter_first->get_properties()}{'NO'} wins"
-            } elsif ($damage_second < $damage_first) {
-                $winner_info = "Fighter ${$fighter_second->get_properties()}{'NO'} wins"
+                $winner_info = "Fighter ${$fighter_first->get_properties()}{'NO'} wins";
+            } elsif ($damage_second > $damage_first) {
+                $winner_info = "Fighter ${$fighter_second->get_properties()}{'NO'} wins";
             }
         }
 
@@ -79,19 +85,19 @@ sub play_one_round {
     }
 
     print("Fighters at rest:\n");
-    for my $team (($self->team1, $self->team2)) {
-        if ($team == $self->team1) {
+    for my $team (($self->{"team1"}, $self->{"team2"})) {
+        if ($team == $self->{"team1"}) {
             $team_fighter = $team1_fighter
         } else {
             $team_fighter = $team2_fighter
         }
         while (1) {
-            if (!($team_fighter)) {
-                $team_fighter->print_info()
+            if ($team_fighter) {
+                $team_fighter->print_info();
             } else {
                 last;
             }
-            $team_fighter = ${$team->get_next_fighter()};
+            $team_fighter = $team->get_next_fighter();
         }
     }
 
@@ -146,7 +152,7 @@ sub input_fighters {
             my @properties = map(int, @properties_str);
             my ( $HP, $attack, $defence, $speed ) = @properties;
             if ($HP + 10 * ($attack + $defence + $speed) <= 500) {
-                my $fighter = new Fighter( $fighter_idx, $HP, $attack, $defence, $speed );
+                my $fighter = Fighter->new( $fighter_idx, $HP, $attack, $defence, $speed );
                 push(@$fighter_list_team, $fighter);
                 last;
             }
@@ -158,13 +164,13 @@ sub input_fighters {
 
 sub play_game {
     my ( $self ) = @_;
-    my $fighter_list_team1 = @{$self->input_fighters(1)};
-    my $fighter_list_team2 = @{$self->input_fighters(2)};
+    my $fighter_list_team1 = $self->input_fighters(1);
+    my $fighter_list_team2 = $self->input_fighters(2);
 
     my $team1 = new Team(1);
     my $team2 = new Team(2);
-    $team1->{"fighter_list"} = $fighter_list_team1;
-    $team2->{"fighter_list"} = $fighter_list_team2;
+    $team1->set_fighter_list($fighter_list_team1);
+    $team2->set_fighter_list($fighter_list_team2);
 
     $self->set_teams($team1, $team2);
 
@@ -180,13 +186,16 @@ sub play_game {
         my @order1 = undef;
         my @order2 = undef;
         while (1) {
-            @order1 = map(int, split(' ', <STDIN>));
+            my $order_input = <STDIN>;
+            chomp $order_input;
+            my @order_str = split(' ', $order_input);
+            @order1 = map(int, @order_str);
             my $flag_valid = 1;
             my $undefeated_number = 0;
             for my $order (@order1) {
                 if (($order < 1) | ($order > 4)) {
                     $flag_valid = 0;
-                } elsif ($$$self->{"team1"}->{"fighter_list"}[$order - 1]->check_defeated()) {
+                } elsif (${$self->{"team1"}->get_fighter_list()}[$order - 1]->check_defeated()) {
                     $flag_valid = 0;
                 }
             }
@@ -202,7 +211,7 @@ sub play_game {
             }
 
             for my $i (0..3) {
-                if (!($self->{"team1"}->{"fighter_list"}[$i]->check_defeated())) {
+                if (!(${$self->{"team1"}->get_fighter_list()}[$i]->check_defeated())) {
                     $undefeated_number += 1;
                 }
             }
@@ -220,18 +229,27 @@ sub play_game {
 
         print("Team 2: please input order\n");
         while (1) {
-            @order2 = map(int, split(' ', <STDIN>));
+            my $order_input = <STDIN>;
+            chomp $order_input;
+            my @order_str = split(' ', $order_input);
+            @order2 = map(int, @order_str);
             my $flag_valid = 1;
             my $undefeated_number = 0;
             for my $order (@order2) {
                 if (($order < 5) | ($order > 8)) {
                     $flag_valid = 0;
-                } elsif (${${$self->{"team1"}->fighter_list}[$order - 1 - 4]}->check_defeated()) {
+                } elsif (${$self->{"team2"}->get_fighter_list()}[$order - 1 - 4]->check_defeated()) {
                     $flag_valid = 0;
                 }
             }
 
-            if (scalar @order2 != scalar @{uniq(@order2)}) {
+            my $num_unique = 0;
+            my %seen = ();
+            foreach my $i (@order2) {
+                $num_unique++ unless $seen{$i}++;
+            }
+
+            if (scalar @order2 != $num_unique) {
                 $flag_valid = 0;
             }
 
@@ -259,7 +277,7 @@ sub play_game {
         $self->play_one_round();
 
         ( $stop, $winner ) = $self->check_winner();
-        if ( $stop ) {
+        if ($stop) {
             last;
         }
     }
