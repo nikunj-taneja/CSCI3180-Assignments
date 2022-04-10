@@ -189,6 +189,12 @@ sub play_game {
         my @order2 = undef;
         while (1) {
             my $order_input = <STDIN>;
+
+            if (!defined($order_input)) {
+                # exit if reached EOF
+                exit(0);
+            }
+
             chomp $order_input;
             my @order_str = split(' ', $order_input);
             @order1 = map(int, @order_str);
@@ -225,7 +231,7 @@ sub play_game {
             if ($flag_valid) {
                 last;
             } else {
-                print("Invalid input error\n");
+                print("Invalid input order\n");
             }
         }
 
