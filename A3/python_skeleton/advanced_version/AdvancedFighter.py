@@ -18,8 +18,8 @@ class AdvancedFighter(Fighter):
     def buy_prop_upgrade(self):
         while self.coins >= 50:
             strat = input(
-                f"Do you want to upgrade properties for Fighter {self.NO}? "\
-                "A for attack. D for defense. S for speed. N for no.\n"
+                "Do you want to upgrade properties for Fighter {}? "\
+                "A for attack. D for defense. S for speed. N for no.\n".format(self)
             )
             if strat == 'N':
                 return
