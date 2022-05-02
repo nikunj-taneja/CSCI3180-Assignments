@@ -1,0 +1,12 @@
+get_basic_point(Ace);
+get_basic_point(Num 5);
+get_basic_point(Jack);
+get_cards(2, 2, [Num 5, Num 2, Num 3, Num 4]);
+cal_TP(22);
+cal_TP(21);
+cal_TP(0);
+get_basic_TP([Ace, Num 2, Num 3, Num 4]);
+get_TP([Ace, Num 10]);
+get_TP([Ace, Ace, Num 3]);
+cal_largest_TP(1, [Ace, Num 10, Ace, Num 3, Ace])
+
