@@ -1,3 +1,20 @@
+
+% CSCI3180 Principles of Programming Languages
+%
+% --- Declaration ---
+%
+% I declare that the assignment here submitted is original except for source
+% material explicitly acknowledged. I also acknowledge that I am aware of
+% University policy and regulations on honesty in academic work, and of the
+% disciplinary guidelines and procedures applicable to breaches of such policy
+% and regulations, as contained in the website
+% http://www.cuhk.edu.hk/policy/academichonesty/
+%
+% Assignment 4
+% Name : Taneja Nikunj
+% Student ID : 1155123371
+% Email Addr : ntaneja9@cse.cuhk.edu.hk
+
 % Sample trees.
 % bt(bt(bt(nil,0,nil),s(0), bt(nil,s(s(s(0))),nil)), s(s(s(s(0)))), bt(nil,s(s(0)),nil))
 % bt(bt(bt(nil,0,nil),s(0), bt(nil,s(s(s(0))),nil)), s(s(s(s(0)))), bt(nil,s(s(s(s(s(0))))),nil))
@@ -6,8 +23,9 @@
 % | ?- is_binary_tree(bt(bt(bt(nil,0,nil),s(0), bt(nil,s(s(s(0))),nil)), s(s(s(s(0)))), bt(nil,s(s(0)),nil))).
 % yes
 
-
-
+is_binary_tree(nil).
+is_binary_tree(bt(LEFT, _, RIGHT)) :- 
+    is_binary_tree(LEFT), is_binary_tree(RIGHT).
 
 
 %2. lt(X,Y) and bs_tree(T). 
