@@ -92,6 +92,7 @@ sum(0, X, X).
 sum(s(X), Y, s(Z)) :- sum(X, Y, Z).
 
 count_nodes(nil, 0).
+count_nodes(bt(nil, _, nil), s(0)). 
 count_nodes(bt(L, _, R), s(X)) :- 
     count_nodes(L, NL), count_nodes(R, NR), sum(NL, NR, X).
 
