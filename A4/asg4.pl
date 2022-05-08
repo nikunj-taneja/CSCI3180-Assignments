@@ -34,9 +34,11 @@ is_binary_tree(bt(LEFT, _, RIGHT)) :-
 % | ?- bs_tree(bt(bt(bt(nil,0,nil),s(0), bt(nil,s(s(s(0))),nil)), s(s(s(s(0)))), bt(nil,s(s(s(s(s(0))))),nil))).
 % yes
 
+lt(0, s(_)).
+lt(s(X), s(Y)) :- lt(X, Y).
 
-
-
+bs_tree(bt(nil, _, nil)).
+bs_tree(bt(bt(LL, L, LR), X, bt(RL, R, RR))) :- lt(L, X), lt(X, R), bs_tree(bt(LL, L, LR)), bs_tree(bt(RL, L, RR)).
 
 % 3. parent(T, P, C).
 % | ?- parent(bt(bt(bt(nil,0,nil),s(0), bt(nil,s(s(s(0))),nil)), s(s(s(s(0)))), bt(nil,s(s(0)), nil)), s(s(s(s(0)))), C).
@@ -47,7 +49,9 @@ is_binary_tree(bt(LEFT, _, RIGHT)) :-
 % | ?- parent(bt(bt(bt(nil,0,nil),s(0), bt(nil,s(s(s(0))),nil)), s(s(s(s(0)))), bt(nil,s(s(0)), nil)), P, 0).
 % P = s(0) ? ;
 % no
-
+parent(bt(bt(_,C,_), P, _), P, C).
+parent(bt(_, P, bt(_,C,_)), P, C).
+parent(bt(L, _, R), P, C) :- parent(L, P, C); parent(R, P, C).
 
 
 
@@ -64,7 +68,8 @@ is_binary_tree(bt(LEFT, _, RIGHT)) :-
 % P = s(0) ? ;
 % P = s(s(s(s(0)))) ? ;
 % no
-
+descendent(T, A, D) :- parent(T, A, D).
+descendent(T, A, D) :- parent(T, A, C), descendent(T, C, D).
 
 
 
@@ -86,9 +91,9 @@ is_binary_tree(bt(LEFT, _, RIGHT)) :-
 sum(0, X, X).
 sum(s(X), Y, s(Z)) :- sum(X, Y, Z).
 
-
-
-
+count_nodes(nil, 0).
+count_nodes(bt(L, _, R), s(X)) :- 
+    count_nodes(L, NL), count_nodes(R, NR), sum(NL, NR, X).
 
 % 6. sum_nodes(T, X).
 % | ?- sum_nodes(bt(bt(nil, s(0), nil), s(s(s(s(0)))), bt(nil,s(s(0)), nil)), X).
@@ -104,10 +109,12 @@ sum(s(X), Y, s(Z)) :- sum(X, Y, Z).
 % T = bt(nil,s(s(s(0))),bt(nil,s(s(s(s(0)))),nil)) ?
 % yes
 
+subtract(X, 0, X).
+subtract(X, s(Y), Z) :- subtract(X, Y, s(Z)).
 
-
-
-
+sum_nodes(nil, 0).
+sum_nodes(bt(L, Root, R), X) :- 
+    sum_nodes(L, SL), sum_nodes(R, SR), sum(SL, SR, Y), subtract(X, Y, Root).
 
 % 7. preorder(T, X).
 % ?- preorder(bt(bt(bt(nil,0,nil),s(0), bt(nil,s(s(s(0))),nil)), s(s(s(s(0)))), bt(nil,s(s(0)),nil)), X).
@@ -117,6 +124,6 @@ sum(s(X), Y, s(Z)) :- sum(X, Y, Z).
 append([],L,L).
 append([H|T],L2,[H|L3]):-append(T,L2,L3).
 
-
-
-
+preorder(nil, []).
+preorder(bt(L, Root, R), X) :-
+    preorder(L, PL), preorder(R, PR), append(PL, PR, Y), append([Root], Y, X).
